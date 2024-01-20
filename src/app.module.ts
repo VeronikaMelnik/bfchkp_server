@@ -1,5 +1,3 @@
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
@@ -13,6 +11,7 @@ import { Comp } from './entities/comp.entity';
 import { Result } from './entities/result.entity';
 import { Prize } from './entities/prize.entity';
 import { Title } from './entities/title.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -39,9 +38,10 @@ import { Title } from './entities/title.entity';
         Title,
       ],
     }),
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 
 // eslint-disable-next-line prettier/prettier
