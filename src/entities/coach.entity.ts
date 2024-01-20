@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Human } from './human.entity';
+import { Team } from './team.entity';
 
 @Entity('coaches')
 export class Coach extends BaseEntity {
@@ -16,4 +17,12 @@ export class Coach extends BaseEntity {
   human: Human;
   @Column()
   humanId: number;
+
+  @OneToOne(() => Team, (team) => team.id)
+  @JoinColumn({
+    name: 'teamId',
+  })
+  team: Team;
+  @Column()
+  teamId: number;
 }
