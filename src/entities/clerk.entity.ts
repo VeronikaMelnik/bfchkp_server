@@ -17,6 +17,8 @@ export class Clerk extends BaseEntity {
     name: 'humanId',
   })
   human: Human;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   humanId: number;
 }

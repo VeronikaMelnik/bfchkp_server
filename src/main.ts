@@ -9,7 +9,9 @@ async function bootstrap() {
   });
   const config = new DocumentBuilder()
     .setTitle('BFCHKP')
-    .setDescription('Description')
+    .setDescription(
+      'Web-application of the organization «Belarusian Federation of Cheerleading and Support Teams» was created as an assistant in search of information about competitions, coaches, disciplines and other parts of the federation',
+    )
     .setVersion('1.0')
     .addTag('Competitions')
     .build();

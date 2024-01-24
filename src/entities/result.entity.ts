@@ -11,12 +11,16 @@ export class Result extends BaseEntity {
   @ManyToOne(() => User, (user) => user.results)
   @JoinColumn({ name: 'userId' })
   users: User;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   userId: number;
 
   @ManyToOne(() => Comp, (comp) => comp.results)
   @JoinColumn({ name: 'compId' })
   comps: Comp;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   compId: number;
 }

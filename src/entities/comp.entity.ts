@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Discip } from './discip.entity';
 import { Result } from './result.entity';
@@ -12,7 +12,6 @@ export class Comp extends BaseEntity {
   date: string;
 
   @ManyToMany(() => Discip, (discip) => discip.comps)
-  @JoinTable()
   discips: Discip[];
 
   @OneToMany(() => Result, (result) => result.comps)

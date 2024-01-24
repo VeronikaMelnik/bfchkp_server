@@ -8,7 +8,7 @@ export class UserRepository {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) { }
+  ) {}
   async create({ email, name, password }: CreateUserProps) {
     const user = this.usersRepository.create({
       email,
@@ -20,7 +20,7 @@ export class UserRepository {
     return res;
   }
   async findByEmail(email: string) {
-    const user = await this.usersRepository.findOneBy({ email })
+    const user = await this.usersRepository.findOneBy({ email });
     return user;
   }
 }
@@ -29,4 +29,3 @@ type CreateUserProps = {
   email: string;
   password: string;
 };
-

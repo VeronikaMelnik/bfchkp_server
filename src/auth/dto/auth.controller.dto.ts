@@ -30,3 +30,24 @@ export class RegistrationFormDataDto {
   @Length(8, 256, { message: "Password's length is 8 to 256 symbols" })
   readonly password: string;
 }
+
+export class AuthorizationFormDataDto {
+  @ApiProperty({
+    example: 'Johnsmith@mail.ru',
+    description: "Email's length is 6 to 256 symbols",
+  })
+  @IsNotEmpty({ message: 'Is required' })
+  @IsString({ message: 'Must be string' })
+  @Length(6, 256, { message: "Email's length is 6 to 256 symbols" })
+  @IsEmail({}, { message: 'It is not email' })
+  readonly email: string;
+
+  @ApiProperty({
+    example: '12345678910',
+    description: "Password's length is 8 to 256 symbols",
+  })
+  @IsNotEmpty({ message: 'Is required' })
+  @IsString({ message: 'Must be string' })
+  @Length(8, 256, { message: "Password's length is 8 to 256 symbols" })
+  readonly password: string;
+}

@@ -12,6 +12,8 @@ export class Prize extends BaseEntity {
     name: 'resultId',
   })
   result: Result;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   resultId: number;
 }

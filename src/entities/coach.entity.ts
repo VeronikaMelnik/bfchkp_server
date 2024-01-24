@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Human } from './human.entity';
 import { Team } from './team.entity';
@@ -15,14 +15,18 @@ export class Coach extends BaseEntity {
     name: 'humanId',
   })
   human: Human;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   humanId: number;
 
-  @OneToOne(() => Team, (team) => team.id)
+  @ManyToOne(() => Team, (team) => team.id)
   @JoinColumn({
     name: 'teamId',
   })
   team: Team;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   teamId: number;
 }

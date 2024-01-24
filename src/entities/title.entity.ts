@@ -13,6 +13,8 @@ export class Title extends BaseEntity {
   @ManyToOne(() => User, (user) => user.titles)
   @JoinColumn({ name: 'userId' })
   users: User;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   userId: number;
 }

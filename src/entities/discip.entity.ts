@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Comp } from './comp.entity';
 
@@ -10,5 +10,12 @@ export class Discip extends BaseEntity {
   type: string;
 
   @ManyToMany(() => Comp, (comp) => comp.discips)
-  comps: Comp[];
+  @JoinColumn({
+    name: 'compId',
+  })
+  comps: Comp;
+  @Column({
+    nullable: true,
+  })
+  compId: number;
 }
