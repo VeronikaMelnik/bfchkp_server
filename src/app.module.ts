@@ -1,48 +1,18 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
-import { User } from './entities/user.entity';
-import { Human } from './entities/human.entity';
-import { Clerk } from './entities/clerk.entity';
-import { Coach } from './entities/coach.entity';
-import { Team } from './entities/team.entity';
-import { Discip } from './entities/discip.entity';
-import { Comp } from './entities/comp.entity';
-import { Result } from './entities/result.entity';
-import { Prize } from './entities/prize.entity';
-import { Title } from './entities/title.entity';
-import { AuthModule } from './auth/auth.module';
+import * as path from 'path';
+import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'bfchkp',
-      logging: false,
-      synchronize: true,
-      entities: [
-        User,
-        Human,
-        Clerk,
-        Coach,
-        Team,
-        Discip,
-        Comp,
-        Result,
-        Prize,
-        Title,
-      ],
-    }),
-    AuthModule,
-  ],
   controllers: [],
   providers: [],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: `.${process.env.NODE_ENV}.env`,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static'),
+    }),
+  ],
 })
-
-// eslint-disable-next-line prettier/prettier
-export class AppModule { }
+export class AppModule {}
