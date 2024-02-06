@@ -1,11 +1,10 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
-@Entity('humans')
-export class Human extends BaseEntity {
-  @Column()
+@Entity('disciplines')
+export class Discipline extends BaseEntity {
+  @Column({
+    unique: true,
+  })
   name: string;
-
-  @Column()
-  image: string;
 }

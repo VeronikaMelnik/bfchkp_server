@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { Member } from './member.entity';
 import { Result } from './result.entity';
 
 @Entity('prizes')
@@ -12,8 +13,14 @@ export class Prize extends BaseEntity {
     name: 'resultId',
   })
   result: Result;
-  @Column({
-    nullable: true,
-  })
+  @Column()
   resultId: number;
+
+  @ManyToOne(() => Member, (member) => member.id)
+  @JoinColumn({
+    name: 'memberId',
+  })
+  member: Member;
+  @Column()
+  memberId: number;
 }

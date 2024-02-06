@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from './users.repository';
+import { UserRepository } from '../database/repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import {
   AuthorizationFormDataDto,
   RegistrationFormDataDto,
 } from './dto/auth.controller.dto';
 import { compare, hash } from 'bcrypt';
+import { PersonRepository } from 'src/database/repositories/person.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersRepository: UserRepository,
+    private personsRepository: PersonRepository,
     private jwtService: JwtService,
   ) {}
 
@@ -21,26 +23,28 @@ export class AuthService {
       throw new Error('Already exists');
     }
     const hashPassword = await hash(password, Number(process.env.HASH_ROUNDS));
+    const person = await this.personsRepository.create({ name });
     const user = await this.usersRepository.create({
       email,
-      name,
+      personId: person.id,
       password: hashPassword,
     });
     const token = this.generateToken({
       email: user.email,
-      name: user.name,
+      name: person.name,
       id: user.id,
-      isAdmin: user.isAdmin,
+      isAdmin: false,
     });
     return token;
   }
   async loginUser(props: AuthorizationFormDataDto) {
     const user = await this.validateUser(props);
+    const person = await this.personsRepository.findById(user.personId);
     const token = this.generateToken({
       email: user.email,
-      name: user.name,
+      name: person.name,
       id: user.id,
-      isAdmin: user.isAdmin,
+      isAdmin: false,
     });
     return token;
   }
@@ -61,7 +65,7 @@ export class AuthService {
 }
 type JwtPayloadType = {
   email: string;
-  name: string;
+  name: string | null;
   id: number;
   isAdmin: boolean;
 };
