@@ -5,13 +5,15 @@ import { TitlesRepository } from "./title.repository";
 import { TitlesController } from "./title.controller";
 import { Title } from "./title.entity";
 import { JwtService } from "@nestjs/jwt";
+import { Result } from "src/result/result.entity";
+import { Member } from "src/member/member.entity";
 
 
 @Module({
   controllers: [TitlesController],
   providers: [TitlesService, TitlesRepository, JwtService],
   imports: [
-    TypeOrmModule.forFeature([Title]),
+    TypeOrmModule.forFeature([Title, Result, Member]),
   ],
   exports: [
     TitlesService,

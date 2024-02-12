@@ -5,7 +5,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { typeOrmConfig } from '.';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './user/user.module';
-import { TeamsModule } from './team/team.module';
 import { CoachesModule } from './coach/coach.module';
 import { ChampionshipsModule } from './championship/championship.module';
 import { DisciplinesModule } from './discipline/discipline.module';
@@ -18,6 +17,7 @@ import { Championships_JudgesModule } from './championship-judge/championship-ju
 import { JudgesModule } from './judge/judge.module';
 import { MembersModule } from './member/member.module';
 import { PersonsModule } from './person/person.module';
+import { TeamsModule } from './team/team.module';
 
 @Module({
   controllers: [],
@@ -33,19 +33,19 @@ import { PersonsModule } from './person/person.module';
     }),
     AuthModule,
     UsersModule,
+    AdminsModule,
     TeamsModule,
-    // CoachesModule,
-    // ChampionshipsModule,
+    CoachesModule,
+    ChampionshipsModule,
     DisciplinesModule,
-    // TitlesModule,
-    // ResultsModule,
-    // PrizesModule,
-    // AdminsModule,
-    // Championships_DisciplinesModule,
-    // Championships_JudgesModule,
-    // JudgesModule,
-    // MembersModule,
-    // PersonsModule,
+    TitlesModule,
+    ResultsModule,
+    PrizesModule,
+    Championships_DisciplinesModule,
+    Championships_JudgesModule,
+    JudgesModule,
+    MembersModule,
+    PersonsModule,
   ],
 })
 export class AppModule {}

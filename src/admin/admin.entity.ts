@@ -10,5 +10,5 @@ export class Admin extends BaseEntity {
   })
   team: Person;
   @Column()
-  personId: number;
+  personId?: number;
 }

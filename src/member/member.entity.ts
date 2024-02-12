@@ -18,4 +18,6 @@ export class Member extends BaseEntity {
     name: 'personId',
   })
   person: Person;
+  @Column()
+  personId: number;
 }

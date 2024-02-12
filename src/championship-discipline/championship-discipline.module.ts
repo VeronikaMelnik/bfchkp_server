@@ -5,13 +5,15 @@ import { Championships_DisciplinesRepository } from "./championship-discipline.r
 import { Championship_Discipline } from "./championship-discipline.entity";
 import { Championships_DisciplinesService } from "./championship-discipline.service";
 import { JwtService } from "@nestjs/jwt";
+import { Discipline } from "src/discipline/discipline.entity";
+import { Championship } from "src/championship/championship.entity";
 
 
 @Module({
   controllers: [Championships_DisciplinesController],
   providers: [Championships_DisciplinesService, Championships_DisciplinesRepository, JwtService],
   imports: [
-    TypeOrmModule.forFeature([Championship_Discipline]),
+    TypeOrmModule.forFeature([Championship_Discipline, Discipline, Championship]),
   ],
   exports: [
     Championships_DisciplinesService,
