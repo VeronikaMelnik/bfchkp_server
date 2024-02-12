@@ -5,7 +5,7 @@ services:
     container_name: postgres
     image: postgres:12
     env_file:
-      - .env.development
+      - .env
     environment:
       PG_DATA: /var/lib/postgresql/data
     ports:

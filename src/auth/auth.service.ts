@@ -1,71 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { UserRepository } from '../database/repositories/user.repository';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import {
-  AuthorizationFormDataDto,
-  RegistrationFormDataDto,
-} from './dto/auth.controller.dto';
-import { compare, hash } from 'bcrypt';
-import { PersonRepository } from 'src/database/repositories/person.repository';
-
+import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { User } from 'src/user/user.entity';
+import { UsersRepository } from 'src/user/user.repository';
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersRepository: UserRepository,
-    private personsRepository: PersonRepository,
-    private jwtService: JwtService,
-  ) {}
 
-  async createUser({ name, email, password }: RegistrationFormDataDto) {
-    const conflict = await this.usersRepository.findByEmail(email);
-    if (conflict) {
-      console.log(conflict);
-      throw new Error('Already exists');
+  constructor(private userRepository: UsersRepository,
+    private jwtService: JwtService) {}
+
+  async login(userDto: CreateUserDto) {
+    const user = await this.validateUser(userDto)
+    return this.generateToken(user)
+  }
+
+  async registration(userDto: CreateUserDto) {
+    const canditate = await this.userRepository.findByEmail(userDto.email)
+    if (canditate) {
+      throw new HttpException('Пользователь с таким email уже существует', HttpStatus.BAD_REQUEST)
     }
-    const hashPassword = await hash(password, Number(process.env.HASH_ROUNDS));
-    const person = await this.personsRepository.create({ name });
-    const user = await this.usersRepository.create({
-      email,
-      personId: person.id,
-      password: hashPassword,
-    });
-    const token = this.generateToken({
-      email: user.email,
-      name: person.name,
-      id: user.id,
-      isAdmin: false,
-    });
-    return token;
-  }
-  async loginUser(props: AuthorizationFormDataDto) {
-    const user = await this.validateUser(props);
-    const person = await this.personsRepository.findById(user.personId);
-    const token = this.generateToken({
-      email: user.email,
-      name: person.name,
-      id: user.id,
-      isAdmin: false,
-    });
-    return token;
+    const hashPassword = await bcrypt.hash(userDto.password, 5);
+    const user = await this.userRepository.create({ ...userDto, password: hashPassword })
+    return this.generateToken(user)
   }
 
-  private generateToken(props: JwtPayloadType) {
-    return this.jwtService.sign(props);
-  }
-
-  private async validateUser(props: AuthorizationFormDataDto) {
-    const foundUser = await this.usersRepository.findByEmail(props.email);
-    const passwordEquals = await compare(props.password, foundUser.password);
-    if (foundUser && passwordEquals) {
-      return foundUser;
-    } else {
-      throw new Error('Incorrect email or password');
+  async generateToken(user: User) {
+    const payload = { id: user.id, personId: user.personId, email: user.email }
+    return {
+      token: this.jwtService.sign(payload)
     }
+  }
+
+  private async validateUser(userDto: CreateUserDto) {
+    const user = await this.userRepository.findByEmail(userDto.email);
+    const passwordEquals = await bcrypt.compare(userDto.password, user.password);
+    if (user && passwordEquals) {
+      return user;
+    }
+    throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
   }
 }
-type JwtPayloadType = {
-  email: string;
-  name: string | null;
-  id: number;
-  isAdmin: boolean;
-};

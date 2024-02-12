@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-async function bootstrap() {
+async function start() {
   const PORT = Number(process.env.PORT || 5000);
   const app = await NestFactory.create(AppModule, {
     cors: true,
@@ -17,8 +17,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
-  await app.listen(PORT, () =>
-    process.stdout.write(`Server started on port: ${PORT}\n`),
-  );
+
+  // app.useGlobalPipes(new ValidationPipe());
+
+  await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`));
 }
-bootstrap();
+start();
