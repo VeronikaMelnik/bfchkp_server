@@ -1,0 +1,14 @@
+export { AdminEntity as Admin } from "./admin.entity";
+export { Championship_Discipline } from "./championship-discipline.entity";
+export { Championship_Judge } from "./championship-judge.entity";
+export { Championship } from "./championship.entity";
+export { Coach } from "./coach.entity";
+export { Discipline } from "./discipline.entity";
+export { Judge } from "./judge.entity";
+export { Member } from "./member.entity";
+export { Person } from "./person.entity";
+export { Prize } from "./prize.entity";
+export { Result } from "./result.entity";
+export { Team } from "./team.entity";
+export { User } from "./user.entity";
+export { Title } from "./title.entity";
