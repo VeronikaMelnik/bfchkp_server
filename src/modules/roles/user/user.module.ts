@@ -14,7 +14,7 @@ import { User } from 'src/database';
   ],
   imports: [
     TypeOrmModule.forFeature([User]),
-    PersonsModule
+    PersonsModule,
   ],
   exports: []
 })
