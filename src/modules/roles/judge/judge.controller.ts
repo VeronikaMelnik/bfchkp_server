@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Judge } from '../../../database/entities/judge.entity';
-import { CreateJudgeDto } from '../../../types/dto/create-judge.dto';
+import { CreateJudgeDto } from '../../../types/dto/judge.dto';
 import { JudgesRepository } from 'src/database/repositories/judge.repository';
 
 @ApiTags('Судьи')

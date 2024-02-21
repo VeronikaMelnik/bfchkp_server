@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTitleDto } from '../../types/dto/create-title.dto';
-import { Title } from 'src/modules/shared/title/title.entity';
+import { CreateTitleDto } from '../../types/dto/title.dto';
+import { Title } from '../entities';
 
 @Injectable()
 export class TitlesRepository {

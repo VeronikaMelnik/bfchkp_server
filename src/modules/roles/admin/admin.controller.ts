@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Admin } from 'typeorm';
-import { CreateAdminDto } from '../../../types/dto/create-admin.dto';
+import { CreateAdminDto } from '../../../types/dto/admin.dto';
 import { AdminsService } from './admin.service';
-import { CreateTeamDto } from 'src/types/dto/create-team.dto';
-import { CreateCoachDto } from 'src/types/dto/create-coach.dto';
+import { CreateTeamDto } from 'src/types/dto/team.dto';
+import { CreateCoachDto } from 'src/types/dto/coach.dto';
 
 @ApiTags('Команды администратора')
 @Controller('api/admin')

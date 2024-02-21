@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Judge } from '../entities/judge.entity';
-import { CreateJudgeDto } from '../../types/dto/create-judge.dto';
+import { CreateJudgeDto } from '../../types/dto/judge.dto';
 
 @Injectable()
 export class JudgesRepository {

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CoachesRepository } from "src/database/repositories";
-import { CreateCoachDto } from "src/types/dto/create-coach.dto";
+import { CreateCoachDto } from "src/types/dto/coach.dto";
 
 @Injectable()
 export class CoachesService {

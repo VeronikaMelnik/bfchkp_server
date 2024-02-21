@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { TeamsService } from "../../shared/team/team.service";
-import { CreateAdminDto } from "src/types/dto/create-admin.dto";
-import { CreateTeamDto } from "src/types/dto/create-team.dto";
-import { CreateCoachDto } from "src/types/dto/create-coach.dto";
+import { CreateAdminDto } from "src/types/dto/admin.dto";
+import { CreateTeamDto } from "src/types/dto/team.dto";
+import { CreateCoachDto } from "src/types/dto/coach.dto";
 import { AdminsRepository, CoachesRepository, JudgesRepository } from "src/database/repositories";
 
 @Injectable()

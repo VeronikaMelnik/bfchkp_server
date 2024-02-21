@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateChampionship_DisciplineDto } from '../../types/dto/create-championship-discipline.dto';
+import { CreateChampionship_DisciplineDto } from '../../types/dto/championship-discipline.dto';
 import { Championship_Discipline } from '../entities/championship-discipline.entity';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { TeamsRepository } from "src/database/repositories";
-import { CreateTeamDto } from "src/types/dto/create-team.dto";
+import { CreateTeamDto } from "src/types/dto/team.dto";
 
 @Injectable()
 export class TeamsService {

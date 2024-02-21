@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AdminEntity } from '../entities/admin.entity';
-import { CreateAdminDto } from '../../types/dto/create-admin.dto';
+import { CreateAdminDto } from '../../types/dto/admin.dto';
 
 @Injectable()
 export class AdminsRepository {

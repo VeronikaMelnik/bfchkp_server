@@ -3,11 +3,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { DisciplinesRepository } from "src/database/repositories/discipline.repository";
 import { Discipline } from "../../../database/entities/discipline.entity";
 import { DisciplinesService } from "./discipline.service";
-import { DisciplinesController } from "./discipline.controller";
 
 
 @Module({
-  controllers: [DisciplinesController],
+  controllers: [],
   providers: [
     DisciplinesService,
     DisciplinesRepository,

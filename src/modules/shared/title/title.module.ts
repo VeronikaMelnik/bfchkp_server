@@ -2,12 +2,11 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { TitlesService } from "./title.service";
 import { TitlesRepository } from "src/database/repositories/title.repository";
-import { TitlesController } from "./title.controller";
-import { Title } from "./title.entity";
+import { Title } from "src/database";
 
 
 @Module({
-  controllers: [TitlesController],
+  controllers: [],
   providers: [
     TitlesRepository,
     TitlesService

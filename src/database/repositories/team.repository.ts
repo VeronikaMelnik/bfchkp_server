@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Team } from '../entities/team.entity';
-import { CreateTeamDto } from '../../types/dto/create-team.dto';
+import { CreateTeamDto } from '../../types/dto/team.dto';
 
 @Injectable()
 export class TeamsRepository {
