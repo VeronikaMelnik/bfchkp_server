@@ -3,15 +3,40 @@ import * as path from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { typeOrmConfig } from '../database';
-import { AdminsModule } from './roles/admin/admin.module';
-import { CoachesModule } from './roles/coach/coach.module';
-import { UsersModule } from './roles/user/user.module';
-import { JudgesModule } from './roles/judge/judge.module';
+import { PersonsModule } from './shared/person/person.module';
+import { TeamsModule } from './shared/team/team.module';
+import { AdminsModule } from './shared/admin/admin.module';
+import { AdminsAccessController } from './roles/admin/adminAccess.controller';
+import { CoachesAccessController } from './roles/coach/coachAccess.controller';
+import { JudgesAccessController } from './roles/judge/judgeAccess.controller';
+import { UnauthorizedAccessController } from './roles/unauthorized/unauthorizedAccess.controller';
+import { UsersAccessController } from './roles/user/userAccess.controller';
+import { CoachesModule } from './shared/coach/coach.module';
+import { UsersModule } from './shared/user/user.module';
+import { JudgesModule } from './shared/judge/judge.module';
+import { AdminsAccessService } from './roles/admin/adminAccess.service';
+import { CoachesAccessService } from './roles/coach/coachAccess.service';
+import { JudgesAccessService } from './roles/judge/judgeAccess.service';
+import { UnauthorizedAccessService } from './roles/unauthorized/unauthorizedAccess.service';
+import { UsersAccessService } from './roles/user/userAccess.service';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
-  controllers: [],
-  providers: [],
+  controllers: [
+    AdminsAccessController,
+    CoachesAccessController,
+    JudgesAccessController,
+    UnauthorizedAccessController,
+    UsersAccessController,
+  ],
+  providers: [
+    AdminsAccessService,
+    CoachesAccessService,
+    JudgesAccessService,
+    UnauthorizedAccessService,
+    UsersAccessService,
+  ],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
@@ -21,10 +46,18 @@ import { JudgesModule } from './roles/judge/judge.module';
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static'),
     }),
+    JwtModule.register({
+      secret: process.env.PRIVATE_KEY,
+      signOptions: {
+        expiresIn: '24h',
+      }
+    }),
     AdminsModule,
     CoachesModule,
     UsersModule,
     JudgesModule,
+    PersonsModule,
+    TeamsModule
   ],
 })
 export class AppModule {}
