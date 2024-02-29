@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber } from "class-validator";
 
-export class CreateChampionship_JudgeDto {
+export class CreateChampionshipDisciplineDto {
   @ApiProperty({ example: '1', description: 'ID' })
   @IsNumber({}, { message: 'Должно быть числом' })
-  judgeId?: number;
+  disciplineId?: number;
 
   @ApiProperty({ example: '1', description: 'ID' })
   @IsNumber({}, { message: 'Должно быть числом' })

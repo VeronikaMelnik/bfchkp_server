@@ -1,6 +1,6 @@
 export { AdminEntity as Admin } from "./admin.entity";
-export { Championship_Discipline } from "./championship-discipline.entity";
-export { Championship_Judge } from "./championship-judge.entity";
+export { ChampionshipDiscipline } from "./championshipDiscipline.entity";
+export { ChampionshipJudge } from "./championshipJudge.entity";
 export { Championship } from "./championship.entity";
 export { Coach } from "./coach.entity";
 export { Discipline } from "./discipline.entity";

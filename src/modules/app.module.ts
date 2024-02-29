@@ -20,6 +20,8 @@ import { JudgesAccessService } from './roles/judge/judgeAccess.service';
 import { UnauthorizedAccessService } from './roles/unauthorized/unauthorizedAccess.service';
 import { UsersAccessService } from './roles/user/userAccess.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ChampionshipsGroupedModule } from './grouped championship/championship.module';
+import { DisciplinesModule } from './shared/discipline/discipline.module';
 
 
 @Module({
@@ -57,7 +59,9 @@ import { JwtModule } from '@nestjs/jwt';
     UsersModule,
     JudgesModule,
     PersonsModule,
-    TeamsModule
+    TeamsModule,
+    DisciplinesModule,
+    ChampionshipsGroupedModule,
   ],
 })
 export class AppModule {}

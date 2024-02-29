@@ -27,4 +27,8 @@ export class JudgesService {
     const data = this.judgesService.findOneBy({ id });
     return data;
   }
+  async findByPersonId(personId: number) {
+    const data = this.judgesService.findBy({ personId });
+    return data;
+  }
 }

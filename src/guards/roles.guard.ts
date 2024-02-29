@@ -5,10 +5,10 @@ import { Observable } from "rxjs";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private jwtService: JwtService,
-    private reflector: Reflector) {
-
-  }
+  constructor(
+    private jwtService: JwtService,
+    private reflector: Reflector
+  ) {}
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
 

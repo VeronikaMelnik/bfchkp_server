@@ -3,8 +3,8 @@ import { BaseEntity } from './base.entity';
 import { Championship } from './championship.entity';
 import { Discipline } from './discipline.entity';
 
-@Entity('championships-disciplines')
-export class Championship_Discipline extends BaseEntity {
+@Entity('championshipsDisciplines')
+export class ChampionshipDiscipline extends BaseEntity {
   @ManyToOne(() => Championship, (championship) => championship.id)
   @JoinColumn({
     name: 'championshipId',

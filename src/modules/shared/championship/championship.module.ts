@@ -3,6 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ChampionshipsService } from "./championship.service";
 import { Championship } from "src/database";
 
+
 @Module({
   controllers: [],
   providers: [

@@ -27,4 +27,8 @@ export class AdminsService {
     const data = this.adminsService.findOneBy({ id });
     return data;
   }
+  async findByPersonId(personId: number) {
+    const data = this.adminsService.findBy({ personId });
+    return data;
+  }
 }

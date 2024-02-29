@@ -4,33 +4,27 @@ import { Championship } from "src/database";
 import { CreateChampionshipDto } from "src/types/dto/championship.dto";
 import { Repository } from "typeorm";
 
-
 @Injectable()
 export class ChampionshipsService {
   constructor(
     @InjectRepository(Championship)
-    private championshipsRepository: Repository<Championship>,
+    private championshipsService: Repository<Championship>,
   ) {}
   async create(props: CreateChampionshipDto) {
-    const championship = this.championshipsRepository.create(props);
-    const res = await this.championshipsRepository.save(championship);
+    const member = this.championshipsService.create(props);
+    const res = await this.championshipsService.save(member);
     return res;
   }
   async update(props: Championship) {
-    const res = await this.championshipsRepository.save(props);
+    const res = await this.championshipsService.save(props);
     return res;
   }
   async getAll() {
-    const users = await this.championshipsRepository.find();
+    const users = await this.championshipsService.find();
     return users;
   }
   async findById(id: number) {
-    const data = this.championshipsRepository.findOneBy({ id });
+    const data = this.championshipsService.findOneBy({ id });
     return data;
   }
-  async findByName(name: string) {
-    const data = this.championshipsRepository.findOneBy({ name });
-    return data;
-  }
-
 }

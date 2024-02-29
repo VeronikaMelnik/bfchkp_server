@@ -5,6 +5,9 @@ import { CreateUserDto } from "src/types/dto/user.dto";
 import * as bcrypt from 'bcryptjs';
 import { User } from "src/database/entities";
 import { UsersService } from "src/modules/shared/user/user.service";
+import { JudgesService } from "src/modules/shared/judge/judge.service";
+import { DisciplinesService } from "src/modules/shared/discipline/discipline.service";
+import { ChampionshipsGroupedService } from "src/modules/grouped championship/championship.service";
 
 @Injectable()
 export class UnauthorizedAccessService {
@@ -12,6 +15,12 @@ export class UnauthorizedAccessService {
   constructor(
     private userService: UsersService,
     private personService: PersonsService,
+
+
+    private championshipService: ChampionshipsGroupedService,
+    private judgeService: JudgesService,
+    private disciplineService: DisciplinesService,
+
     private jwtService: JwtService
   ) {}
 
@@ -45,5 +54,29 @@ export class UnauthorizedAccessService {
       return user;
     }
     throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
+  }
+
+  async getChampionshipById(id: number) {
+    const championship = await this.championshipService.findById(id)
+
+    const [judges, disciplines] = await Promise.all([
+      Promise.all(
+        championship.judges.map(async ({ id }) => {
+          return this.judgeService.findById(id)
+        })
+      ),
+      Promise.all(
+        championship.disciplines.map(async ({ id }) => {
+          return this.disciplineService.findById(id)
+        })
+      )
+    ])
+
+    return {
+      id: championship.id,
+      name: championship.name,
+      judges,
+      disciplines,
+    }
   }
 }

@@ -1,23 +1,33 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { CreateUserDto } from '../../../types/dto/user.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UnauthorizedAccessService } from './unauthorizedAccess.service';
+import { Championship } from 'src/database';
+import { IsAdmin } from 'src/guards/roles-auth.decorator';
+import { CreateUserDto } from 'src/types/dto/user.dto';
 
-@ApiTags('Команды юзера')
-@Controller('api/auth')
+@ApiTags('Команды неавторизованного юзера')
+@Controller('api/')
 export class UnauthorizedAccessController {
 
-  constructor(private userRepository: UnauthorizedAccessService) {}
+  constructor(private unauthorizedService: UnauthorizedAccessService) {}
 
   @ApiOperation({ summary: 'Авторизация юзера' })
-  @Post('/login')
+  @Post('auth/login')
   login(@Body() userDto: CreateUserDto) {
-    return this.userRepository.login(userDto)
+    return this.unauthorizedService.login(userDto)
   }
 
   @ApiOperation({ summary: 'Регистрация нового юзера' })
-  @Post('/registration')
+  @Post('auth/registration')
   registration(@Body() userDto: CreateUserDto) {
-    return this.userRepository.registration(userDto)
+    return this.unauthorizedService.registration(userDto)
+  }
+
+  @ApiOperation({ summary: 'Получение чемпионата' })
+  @ApiResponse({ status: 200, type: [Championship] })
+  @IsAdmin()
+  @Get('/championship/:id')
+  getAll(@Param('id') id: string) {
+    return this.unauthorizedService.getChampionshipById(Number(id))
   }
 }
