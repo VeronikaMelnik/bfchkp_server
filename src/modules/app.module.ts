@@ -41,7 +41,7 @@ import { DisciplinesModule } from './shared/discipline/discipline.module';
   ],
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      envFilePath: `.env`,
       isGlobal: true,
     }),
     typeOrmConfig(),
