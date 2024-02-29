@@ -20,12 +20,12 @@ import {
 export const typeOrmConfig = () => {
   return TypeOrmModule.forRoot({
     type: 'postgres',
-    host: 'dpg-cnfqvf021fec73f8sls0-a',
-    port: 5432,
-    username: 'veronika',
-    password: 'XuQ0lLepEaxZYudbbYMEWtETr4RUcPIy',
-    database: 'bfchkp_wwbq',
-    url: 'postgres://veronika:XuQ0lLepEaxZYudbbYMEWtETr4RUcPIy@dpg-cnfqvf021fec73f8sls0-a.frankfurt-postgres.render.com/bfchkp_wwbq',
+    host: process.env.POSTGRES_HOST,
+    port: Number(process.env.POSTGRES_PORT),
+    username: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    url: process.env.POSTGRES_URL,
     logging: false,
     synchronize: true,
     ssl: true,

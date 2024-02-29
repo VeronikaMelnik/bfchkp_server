@@ -31,4 +31,8 @@ export class CoachesService {
     const data = this.coachesService.findBy({ teamId });
     return data;
   }
+  async findByPersonId(personId: number) {
+    const data = this.coachesService.findBy({ personId });
+    return data;
+  }
 }

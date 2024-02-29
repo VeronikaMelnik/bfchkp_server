@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Judge } from '../../../database/entities/judge.entity';
 import { CreateJudgeDto } from '../../../types/dto/judge.dto';
 import { JudgesAccessService } from './judgeAccess.service';
+import { JudgeRoleGuard } from 'src/guards/judge.guard';
 
-@ApiTags('Судьи')
+@ApiTags('Команды судьи')
 @Controller('judges')
 export class JudgesAccessController {
 
@@ -12,6 +13,7 @@ export class JudgesAccessController {
 
   @ApiOperation({ summary: 'Создание судьи' })
   @ApiResponse({ status: 200, type: Judge })
+  @UseGuards(JudgeRoleGuard)
   @Post()
   create(@Body() data: CreateJudgeDto) {
     return this.judgeService.create(data);
@@ -19,8 +21,7 @@ export class JudgesAccessController {
 
   @ApiOperation({ summary: 'Получение всех судей' })
   @ApiResponse({ status: 200, type: [Judge] })
-  // @IsAdmin()
-  // @UseGuards(RolesGuard)
+  @UseGuards(JudgeRoleGuard)
   @Get()
   getAll() {
     return this.judgeService.getAll();

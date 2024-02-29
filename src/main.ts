@@ -3,7 +3,7 @@ import { AppModule } from './modules/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function start() {
-  const PORT = Number(process.env.PORT || 5000);
+  const POSTGRES_PORT = Number(process.env.POSTGRES_PORT || 5000);
   const app = await NestFactory.create(AppModule, {
     cors: true,
   });
@@ -20,6 +20,6 @@ async function start() {
 
   // app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`));
+  await app.listen(POSTGRES_PORT, () => console.log(`Server started on port = ${POSTGRES_PORT}`));
 }
 start();
