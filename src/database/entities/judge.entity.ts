@@ -4,7 +4,7 @@ import { Person } from './person.entity';
 
 @Entity('judges')
 export class Judge extends BaseEntity {
-  @OneToOne(() => Person, (person) => person.id)
+  @OneToOne(() => Person, (person) => person.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'personId',
   })

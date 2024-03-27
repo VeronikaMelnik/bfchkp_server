@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { ImageEntity } from './image.entity';
 
 @Entity('persons')
 export class Person extends BaseEntity {
@@ -9,6 +10,9 @@ export class Person extends BaseEntity {
   @Column({ nullable: true })
   lastName: string;
 
-  @Column({ nullable: true })
+  @OneToOne(() => ImageEntity)
+  @JoinColumn({ name: 'imageId' })
   image: string;
+  @Column({ nullable: true })
+  imageId: number;
 }

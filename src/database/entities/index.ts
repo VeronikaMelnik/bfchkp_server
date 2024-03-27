@@ -12,3 +12,6 @@ export { Result } from "./result.entity";
 export { Team } from "./team.entity";
 export { User } from "./user.entity";
 export { Title } from "./title.entity";
+export { ImageEntity } from "./image.entity";
+export { Dictionary } from "./dictionary.entity";
+export { News } from "./news.entity";

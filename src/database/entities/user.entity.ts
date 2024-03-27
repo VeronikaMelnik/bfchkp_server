@@ -18,7 +18,7 @@ export class User extends BaseEntity {
   password: string;
 
   @ApiProperty({ example: '1', description: 'ID' })
-  @OneToOne(() => Person, (person) => person.id)
+  @OneToOne(() => Person, (person) => person.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'personId',
   })

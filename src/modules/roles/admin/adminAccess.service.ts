@@ -7,6 +7,8 @@ import { AdminsService } from "src/modules/shared/admin/admin.service";
 import { CoachesService } from "src/modules/shared/coach/coach.service";
 import { JudgesService } from "src/modules/shared/judge/judge.service";
 import { CreateJudgeDto } from "src/types/dto/judge.dto";
+import { UsersService } from "src/modules/shared/user/user.service";
+import { GetAllUsersDto } from "src/types/dto/user.dto";
 
 @Injectable()
 export class AdminsAccessService {
@@ -15,6 +17,7 @@ export class AdminsAccessService {
     private coachService: CoachesService,
     private judgeService: JudgesService,
     private teamService: TeamsService,
+    private userService: UsersService,
   ) {}
 
   createAdmin(data: CreateAdminDto) {
@@ -28,5 +31,9 @@ export class AdminsAccessService {
   }
   createJudge(data: CreateJudgeDto) {
     return this.judgeService.create(data)
+  }
+
+  getAllUsers(data: GetAllUsersDto) {
+    return this.userService.getAllUsers(data)
   }
 }

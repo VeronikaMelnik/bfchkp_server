@@ -1,13 +1,15 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { PersonsService } from "../../shared/person/person.service";
 import { JwtService } from "@nestjs/jwt";
-import { CreateUserDto } from "src/types/dto/user.dto";
+import { CreateUserDto, LoginUserDto } from "src/types/dto/user.dto";
 import * as bcrypt from 'bcryptjs';
 import { User } from "src/database/entities";
 import { UsersService } from "src/modules/shared/user/user.service";
 import { JudgesService } from "src/modules/shared/judge/judge.service";
 import { DisciplinesService } from "src/modules/shared/discipline/discipline.service";
 import { ChampionshipsGroupedService } from "src/modules/grouped championship/championship.service";
+import { ImageService } from "src/modules/shared/image/image.service";
+import { Response } from "express";
 
 @Injectable()
 export class UnauthorizedAccessService {
@@ -16,7 +18,7 @@ export class UnauthorizedAccessService {
     private userService: UsersService,
     private personService: PersonsService,
 
-
+    private imageService: ImageService,
     private championshipService: ChampionshipsGroupedService,
     private judgeService: JudgesService,
     private disciplineService: DisciplinesService,
@@ -24,19 +26,19 @@ export class UnauthorizedAccessService {
     private jwtService: JwtService
   ) {}
 
-  async login(userDto: CreateUserDto) {
+  async login(userDto: LoginUserDto) {
     const user = await this.validateUser(userDto)
     return this.generateToken(user)
   }
 
-  async registration(userDto: CreateUserDto) {
-    const canditate = await this.userService.findByEmail(userDto.email)
-    if (canditate) {
-      throw new HttpException('Пользователь с таким email уже существует', HttpStatus.BAD_REQUEST)
+  async registration({email, lastName, name, password}: CreateUserDto) {
+    const candidate = await this.userService.findByEmail(email)
+    if (candidate) {
+      throw new HttpException('Пользователь с таким email уже существует', HttpStatus.CONFLICT)
     }
-    const person = await this.personService.create({})
-    const hashPassword = await bcrypt.hash(userDto.password, 5);
-    const user = await this.userService.create({ ...userDto, password: hashPassword, personId: person.id })
+    const person = await this.personService.create({lastName, name})
+    const hashPassword = await bcrypt.hash(password, Number(process.env.HASH_ROUNDS));
+    const user = await this.userService.create({ email, password: hashPassword, personId: person.id })
     return this.generateToken(user)
   }
 
@@ -47,9 +49,9 @@ export class UnauthorizedAccessService {
     }
   }
 
-  private async validateUser(userDto: CreateUserDto) {
-    const user = await this.userService.findByEmail(userDto.email);
-    const passwordEquals = await bcrypt.compare(userDto.password, user.password);
+  private async validateUser({email, password}: ValidateUserProps) {
+    const user = await this.userService.findByEmail(email);
+    const passwordEquals = await bcrypt.compare(password, user.password);
     if (user && passwordEquals) {
       return user;
     }
@@ -79,4 +81,19 @@ export class UnauthorizedAccessService {
       disciplines,
     }
   }
+
+  getImage(data: getImage){
+    return this.imageService.getImage(data)
+  }
+}
+
+
+interface ValidateUserProps {
+  email: string;
+  password: string;
+}
+
+interface getImage {
+  id: number;
+  res: Response;
 }

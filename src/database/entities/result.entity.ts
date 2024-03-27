@@ -8,7 +8,7 @@ export class Result extends BaseEntity {
   @Column()
   place: number;
 
-  @ManyToOne(() => Championship, (championship) => championship.id)
+  @ManyToOne(() => Championship, (championship) => championship.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'championshipId',
   })
@@ -16,7 +16,7 @@ export class Result extends BaseEntity {
   @Column()
   championshipId: number;
 
-  @ManyToOne(() => Member, (member) => member.id)
+  @ManyToOne(() => Member, (member) => member.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'memberId',
   })

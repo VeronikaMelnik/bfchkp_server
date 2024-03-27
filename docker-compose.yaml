@@ -1,8 +1,26 @@
-version: '3.1'
+version: '3.0'
 
 services:
-  postgres:
-    container_name: postgres
+  bfchkp-api:
+    container_name: bfchkp-api
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=bfchkp-db
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3001:3001
+      - 9229:9229
+    command: npm run start:dev
+    depends_on:
+      - bfchkp-db
+    restart: always
+  bfchkp-db:
+    container_name: bfchkp-db
     image: postgres:12
     env_file:
       - .env
@@ -13,5 +31,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+
 volumes:
   pgdata:
+

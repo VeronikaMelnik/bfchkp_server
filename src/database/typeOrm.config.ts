@@ -14,8 +14,11 @@ import {
   Member,
   Prize,
   Title,
+  Dictionary,
+  News,
+  ImageEntity
 } from './entities';
-
+import * as Migrations from './migrations';
 
 export const typeOrmConfig = () => {
   return TypeOrmModule.forRoot({
@@ -28,7 +31,7 @@ export const typeOrmConfig = () => {
     url: process.env.POSTGRES_URL,
     logging: false,
     synchronize: true,
-    ssl: true,
+    ssl: !!process.env.POSTGRES_SSL || undefined,
     entities: [
       Admin,
       Coach,
@@ -44,6 +47,11 @@ export const typeOrmConfig = () => {
       Member,
       Prize,
       Title,
+      ImageEntity,
+      Dictionary,
+      News,
     ],
+    migrations: Object.values(Migrations),
+    migrationsRun: true,
   });
 };

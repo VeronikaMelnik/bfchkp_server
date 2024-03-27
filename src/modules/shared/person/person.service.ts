@@ -1,38 +1,42 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Person } from "src/database";
-import { CreatePersonDto } from "src/types/dto/person.dto";
 import { Repository } from "typeorm";
 
 @Injectable()
 export class PersonsService {
   constructor(
     @InjectRepository(Person)
-    private personsService: Repository<Person>,
+    private personRepository: Repository<Person>,
   ) {}
-  async create(props: CreatePersonDto) {
-    const person = this.personsService.create(props);
-    const res = await this.personsService.save(person);
+  async create(props: CreationProps ) {
+    const person = this.personRepository.create(props);
+    const res = await this.personRepository.save(person);
     return res;
   }
   async update(props: Person) {
-    const res = await this.personsService.save(props);
+    const res = await this.personRepository.save(props);
     return res;
   }
   async getAll() {
-    const users = await this.personsService.find();
+    const users = await this.personRepository.find();
     return users;
   }
   async findById(id: number) {
-    const data = this.personsService.findOneBy({ id });
+    const data = this.personRepository.findOneBy({ id });
     return data;
   }
   async findByName(name: string) {
-    const data = this.personsService.findOneBy({ name });
+    const data = this.personRepository.findOneBy({ name });
     return data;
   }
   async findByLastName(lastName: string) {
-    const data = this.personsService.findOneBy({ lastName });
+    const data = this.personRepository.findOneBy({ lastName });
     return data;
   }
+}
+
+interface CreationProps {
+  name: string;
+  lastName: string;
 }
