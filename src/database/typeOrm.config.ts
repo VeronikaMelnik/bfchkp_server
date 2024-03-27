@@ -14,6 +14,9 @@ import {
   Member,
   Prize,
   Title,
+  Dictionary,
+  News,
+  ImageEntity
 } from './entities';
 
 
@@ -28,7 +31,7 @@ export const typeOrmConfig = () => {
     url: process.env.POSTGRES_URL,
     logging: false,
     synchronize: true,
-    ssl: true,
+    ssl: !!process.env.POSTGRES_SSL || undefined,
     entities: [
       Admin,
       Coach,
@@ -44,6 +47,9 @@ export const typeOrmConfig = () => {
       Member,
       Prize,
       Title,
+      ImageEntity,
+      Dictionary,
+      News,
     ],
   });
 };

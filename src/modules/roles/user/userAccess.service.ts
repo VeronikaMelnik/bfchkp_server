@@ -1,10 +1,9 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { PersonsService } from "../../shared/person/person.service";
 import { JwtService } from "@nestjs/jwt";
-import { CreateUserDto } from "src/types/dto/user.dto";
-import * as bcrypt from 'bcryptjs';
-import { User } from "src/database/entities";
 import { UsersService } from "src/modules/shared/user/user.service";
+import { TokenPayload } from "src/types/token/token.types";
+import { ImageService } from "src/modules/shared/image/image.service";
 
 @Injectable()
 export class UsersAccessService {
@@ -12,28 +11,43 @@ export class UsersAccessService {
   constructor(
     private userService: UsersService,
     private personService: PersonsService,
+    private imageService: ImageService,
     private jwtService: JwtService
   ) {}
 
-  async login(userDto: CreateUserDto) {
-    const user = await this.validateUser(userDto)
-    return this.generateToken(user)
-  }
-
-
-  async generateToken(user: User) {
-    const payload = { id: user.id, personId: user.personId, email: user.email }
-    return {
-      token: this.jwtService.sign(payload)
+  async getMe(user: TokenPayload) {
+    try {
+      return this.userService.getUserData(user.id)
+    } catch (error) {
+      Logger.error(`Get user id: ${user.id}`, 'User')
+      throw new NotFoundException({ user, error });
     }
   }
 
-  private async validateUser(userDto: CreateUserDto) {
-    const user = await this.userService.findByEmail(userDto.email);
-    const passwordEquals = await bcrypt.compare(userDto.password, user.password);
-    if (user && passwordEquals) {
-      return user;
+  async uploadImage({ data, user }: UploadImageProps) {
+    const person = await this.personService.findById(user.personId);
+    if (!person) {
+      Logger.warn('person not found', 'Person');
+      throw new NotFoundException(`person with id: ${user.personId}`);
     }
-    throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
+    if (person.imageId) {
+      const image = await this.imageService.updateImage({data, id: person.imageId, userId: user.id})
+      return image.url
+    } else {
+      const filePath = `person/${user.personId}`;
+      const image = await this.imageService.addImageToList({
+        filePath,
+        data,
+        userId: user.id,
+      });
+      person.imageId = image.id
+      await this.personService.update(person)
+      return image.url
+    }
   }
+}
+
+interface UploadImageProps {
+  data: Buffer;
+  user: TokenPayload
 }

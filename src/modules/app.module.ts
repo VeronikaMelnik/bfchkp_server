@@ -22,6 +22,7 @@ import { UsersAccessService } from './roles/user/userAccess.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ChampionshipsGroupedModule } from './grouped championship/championship.module';
 import { DisciplinesModule } from './shared/discipline/discipline.module';
+import { ImageModule } from './shared/image/image.module';
 
 
 @Module({
@@ -62,6 +63,7 @@ import { DisciplinesModule } from './shared/discipline/discipline.module';
     TeamsModule,
     DisciplinesModule,
     ChampionshipsGroupedModule,
+    ImageModule,
   ],
 })
 export class AppModule {}

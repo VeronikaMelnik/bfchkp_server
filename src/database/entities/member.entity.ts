@@ -5,7 +5,7 @@ import { Person } from './person.entity';
 
 @Entity('members')
 export class Member extends BaseEntity {
-  @ManyToOne(() => Team, (team) => team.id)
+  @ManyToOne(() => Team, (team) => team.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'teamId',
   })
@@ -13,7 +13,7 @@ export class Member extends BaseEntity {
   @Column()
   teamId: number;
 
-  @OneToOne(() => Person, (person) => person.id)
+  @OneToOne(() => Person, (person) => person.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'personId',
   })

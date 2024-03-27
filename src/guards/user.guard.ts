@@ -5,7 +5,7 @@ import { JudgesService } from "src/modules/shared/judge/judge.service";
 import { TokenPayload } from "src/types/token/token.types";
 
 @Injectable()
-export class AdminRoleGuard implements CanActivate {
+export class UserRoleGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private adminService: AdminsService,

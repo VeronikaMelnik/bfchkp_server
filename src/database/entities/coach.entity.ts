@@ -10,7 +10,7 @@ export class Coach extends BaseEntity {
   })
   experience: number;
 
-  @OneToOne(() => Person, (person) => person.id)
+  @OneToOne(() => Person, (person) => person.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'personId',
   })

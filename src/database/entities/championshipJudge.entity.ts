@@ -5,7 +5,7 @@ import { Judge } from './judge.entity';
 
 @Entity('championshipsJudges')
 export class ChampionshipJudge extends BaseEntity {
-  @ManyToOne(() => Championship, (championship) => championship.id)
+  @ManyToOne(() => Championship, (championship) => championship.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'championshipId',
   })
@@ -13,7 +13,7 @@ export class ChampionshipJudge extends BaseEntity {
   @Column()
   championshipId: number;
 
-  @ManyToOne(() => Judge, (judge) => judge.id)
+  @ManyToOne(() => Judge, (judge) => judge.id, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'judgeId',
   })
