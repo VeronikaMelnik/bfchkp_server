@@ -37,7 +37,7 @@ export class UnauthorizedAccessService {
       throw new HttpException('Пользователь с таким email уже существует', HttpStatus.CONFLICT)
     }
     const person = await this.personService.create({lastName, name})
-    const hashPassword = await bcrypt.hash(password, 5);
+    const hashPassword = await bcrypt.hash(password, Number(process.env.HASH_ROUNDS));
     const user = await this.userService.create({ email, password: hashPassword, personId: person.id })
     return this.generateToken(user)
   }

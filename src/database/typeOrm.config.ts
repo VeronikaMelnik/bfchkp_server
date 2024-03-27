@@ -18,7 +18,7 @@ import {
   News,
   ImageEntity
 } from './entities';
-
+import * as Migrations from './migrations';
 
 export const typeOrmConfig = () => {
   return TypeOrmModule.forRoot({
@@ -51,5 +51,7 @@ export const typeOrmConfig = () => {
       Dictionary,
       News,
     ],
+    migrations: Object.values(Migrations),
+    migrationsRun: true,
   });
 };
