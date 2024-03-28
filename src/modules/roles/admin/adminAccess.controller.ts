@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Admin } from 'typeorm';
 import { CreateTeamDto } from 'src/types/dto/team.dto';
 import { CreateCoachDto } from 'src/types/dto/coach.dto';
@@ -10,6 +10,9 @@ import { GetAllUsersDto } from 'src/types/dto/user.dto';
 import { CreateNewsDto } from 'src/types/dto/news.dto';
 import { TokenPayload } from 'src/types/token/token.types';
 import { UpdateDictionaryDto } from 'src/types/dto/dictionary.dto';
+import { fileSchema } from 'src/types/file'
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ONE_MB_IN_BYTES } from 'src/constants';
 
 @ApiTags('Команды администратора')
 @ApiBearerAuth()
@@ -40,15 +43,22 @@ export class AdminsAccessController {
     return this.adminsService.createTeam(data);
   }
 
-  @ApiOperation({ summary: 'Создание news image' })
-  @ApiResponse({ status: 200, type: Admin })
+  @ApiOperation({ summary: 'Creation news image' })
+  @ApiResponse({ status: 200 })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(fileSchema)
   @Post('/news/:id/image')
-  createNewsImage(
-    @UploadedFile() { buffer }: { buffer: Buffer },
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { files: 1, fileSize: 4 * ONE_MB_IN_BYTES },
+    }),
+  )
+  uploadImage(
+    @UploadedFile() file: { buffer: Buffer },
     @Req() { user }: { user: TokenPayload },
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.adminsService.createNewsImage({ data: buffer, id, user });
+    return this.adminsService.createNewsImage({ data: file.buffer, user, id });
   }
 
   @ApiOperation({ summary: 'Создание news' })

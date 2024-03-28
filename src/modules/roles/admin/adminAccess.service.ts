@@ -65,7 +65,7 @@ export class AdminsAccessService {
       return image.url
     } else {
       const filePath = `news/${news.id}`;
-      const image = await this.imageService.addImageToList({
+      const image = await this.imageService.uploadImage({
         filePath,
         data,
         userId: user.id,

@@ -53,11 +53,14 @@ export class UnauthorizedAccessService {
 
   private async validateUser({email, password}: ValidateUserProps) {
     const user = await this.userService.findByEmail(email);
-    const passwordEquals = await bcrypt.compare(password, user.password);
-    if (user && passwordEquals) {
-      return user;
+    if (!user) {
+      throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
     }
-    throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
+    const passwordEquals = await bcrypt.compare(password, user.password);
+    if (!passwordEquals) {
+      throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
+    }
+    return user;
   }
 
   async getChampionshipById(id: number) {
