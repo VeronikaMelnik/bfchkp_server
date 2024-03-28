@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { JudgesService } from "./judge.service";
-import { Judge } from "../../../database/entities/judge.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PersonsModule } from "src/modules/shared/person/person.module";
+import { Judge } from "src/database";
 
 
 

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { TeamsService } from "../../shared/team/team.service";
 import { CreateAdminDto } from "src/types/dto/admin.dto";
 import { CreateTeamDto } from "src/types/dto/team.dto";
@@ -9,6 +9,12 @@ import { JudgesService } from "src/modules/shared/judge/judge.service";
 import { CreateJudgeDto } from "src/types/dto/judge.dto";
 import { UsersService } from "src/modules/shared/user/user.service";
 import { GetAllUsersDto } from "src/types/dto/user.dto";
+import { NewsService } from "src/modules/shared/news/news.service";
+import { CreateNewsDto } from "src/types/dto/news.dto";
+import { ImageService } from "src/modules/shared/image/image.service";
+import { TokenPayload } from "src/types/token/token.types";
+import { DictionaryService } from "src/modules/shared/dictionary/dictionary.service";
+import { Dictionary } from "src/database";
 
 @Injectable()
 export class AdminsAccessService {
@@ -18,7 +24,10 @@ export class AdminsAccessService {
     private judgeService: JudgesService,
     private teamService: TeamsService,
     private userService: UsersService,
-  ) {}
+    private newsService: NewsService,
+    private imageService: ImageService,
+    private dictionaryService: DictionaryService,
+  ) { }
 
   createAdmin(data: CreateAdminDto) {
     return this.adminService.create(data)
@@ -36,4 +45,64 @@ export class AdminsAccessService {
   getAllUsers(data: GetAllUsersDto) {
     return this.userService.getAllUsers(data)
   }
+
+  createNews(data: CreateNewsDto) {
+    return this.newsService.create(data)
+  }
+
+  deleteNews(id: number) {
+    return this.newsService.deleteNews(id)
+  }
+
+  async createNewsImage({ data, id, user }: CreateImageProps) {
+    const news = await this.newsService.findById(id);
+    if (!news) {
+      Logger.warn('person not found', 'Person');
+      throw new NotFoundException(`News with id: ${id}`);
+    }
+    if (news.imageId) {
+      const image = await this.imageService.updateImage({ data, id: news.imageId, userId: user.id })
+      return image.url
+    } else {
+      const filePath = `news/${news.id}`;
+      const image = await this.imageService.addImageToList({
+        filePath,
+        data,
+        userId: user.id,
+      });
+      news.imageId = image.id
+      await this.newsService.update(news)
+      return image.url
+    }
+  }
+
+  async updateDictionary({ id, ...data }: UpdateDictionaryProps) {
+    const dict = await this.dictionaryService.findById(id)
+    Object.entries(data).forEach(([key, value]: [keyof typeof data, string]) => {
+      if (key && value) {
+        dict[key] = value
+      }
+    })
+    return this.dictionaryService.update(dict)
+  }
+}
+
+interface CreateImageProps {
+  data: Buffer;
+  id: number;
+  user: TokenPayload
+}
+interface UpdateDictionaryProps extends Partial<
+  Omit<
+    Dictionary, 'updatedAt'
+    | 'createdAt'
+    | 'hasId'
+    | 'recover'
+    | 'reload'
+    | 'remove'
+    | 'save'
+    | 'softRemove'
+  >
+> {
+  id: number;
 }
