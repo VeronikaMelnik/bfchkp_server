@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { PersonsService } from "../../shared/person/person.service";
 import { JwtService } from "@nestjs/jwt";
 import { CreateUserDto, LoginUserDto } from "src/types/dto/user.dto";
@@ -10,6 +10,7 @@ import { DisciplinesService } from "src/modules/shared/discipline/discipline.ser
 import { ChampionshipsGroupedService } from "src/modules/grouped championship/championship.service";
 import { ImageService } from "src/modules/shared/image/image.service";
 import { Response } from "express";
+import { NewsService } from "src/modules/shared/news/news.service";
 
 @Injectable()
 export class UnauthorizedAccessService {
@@ -22,6 +23,7 @@ export class UnauthorizedAccessService {
     private championshipService: ChampionshipsGroupedService,
     private judgeService: JudgesService,
     private disciplineService: DisciplinesService,
+    private newsService: NewsService,
 
     private jwtService: JwtService
   ) {}
@@ -51,11 +53,14 @@ export class UnauthorizedAccessService {
 
   private async validateUser({email, password}: ValidateUserProps) {
     const user = await this.userService.findByEmail(email);
-    const passwordEquals = await bcrypt.compare(password, user.password);
-    if (user && passwordEquals) {
-      return user;
+    if (!user) {
+      throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
     }
-    throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
+    const passwordEquals = await bcrypt.compare(password, user.password);
+    if (!passwordEquals) {
+      throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
+    }
+    return user;
   }
 
   async getChampionshipById(id: number) {
@@ -85,8 +90,25 @@ export class UnauthorizedAccessService {
   getImage(data: getImage){
     return this.imageService.getImage(data)
   }
+
+  getAllNews(data: GetAllProps){
+    return this.newsService.getAll(data)
+  }
+
+  getOneNews(id: number){
+    try {
+      return this.newsService.getOne(id)
+    } catch (error) {
+      throw new NotFoundException(`News id: ${id} doesn't exist`)
+    }
+  }
 }
 
+interface GetAllProps {
+  page: number,
+  perPage: number,
+  searchValue: string
+}
 
 interface ValidateUserProps {
   email: string;

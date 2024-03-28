@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersAccessService } from './userAccess.service';
 import { UserRoleGuard } from 'src/guards/user.guard';
 import { TokenPayload } from 'src/types/token/token.types';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ONE_MB_IN_BYTES } from 'src/constants';
+import { fileSchema } from 'src/types/file';
 
 @ApiTags('Команды юзера')
 @ApiBearerAuth()
@@ -22,6 +23,8 @@ export class UsersAccessController {
   }
 
   @ApiResponse({ status: 200 })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(fileSchema)
   @Post('/avatar')
   @UseInterceptors(
     FileInterceptor('file', {

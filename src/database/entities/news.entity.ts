@@ -8,7 +8,7 @@ export class News extends BaseEntity {
   @OneToOne(() => ImageEntity)
   @JoinColumn({ name: 'imageId' })
   image: ImageEntity;
-  @Column()
+  @Column({nullable: true})
   imageId: number;
 
   @OneToOne(() => Dictionary)
