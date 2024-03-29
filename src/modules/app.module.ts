@@ -23,6 +23,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ChampionshipsGroupedModule } from './grouped championship/championship.module';
 import { DisciplinesModule } from './shared/discipline/discipline.module';
 import { ImageModule } from './shared/image/image.module';
+import { NewsModule } from './shared/news/news.module';
+import { DictionaryModule } from './shared/dictionary/dictionary.module';
 
 
 @Module({
@@ -64,6 +66,8 @@ import { ImageModule } from './shared/image/image.module';
     DisciplinesModule,
     ChampionshipsGroupedModule,
     ImageModule,
+    NewsModule,
+    DictionaryModule,
   ],
 })
 export class AppModule {}

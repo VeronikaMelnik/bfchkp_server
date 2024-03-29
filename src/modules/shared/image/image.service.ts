@@ -19,7 +19,7 @@ export class ImageService {
 
   ) {}
 
-  async addImageToList({ filePath, data, userId }: CreatingImageProps) {
+  async uploadImage({ filePath, data, userId }: CreatingImageProps) {
     const bucket = storage().bucket();
     const file = bucket.file(filePath);
     await file.save(data, { private: false }).catch((err) => {
@@ -30,11 +30,10 @@ export class ImageService {
       url: ``,
       filePath,
     });
-    Logger.log(`user id: ${userId} upload new image id: ${entity.id}`, 'Image');
     await this.imageRepository.save(entity);
     entity.url = `${process.env.API_URL}/api/images/${entity.id}`;
-
     this.imageRepository.save(entity);
+    Logger.log(`user id: ${userId} upload new image id: ${entity.id}`, 'Image');
     return entity
   }
 

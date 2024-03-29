@@ -23,12 +23,13 @@ export class CreateUserDto {
 }
 
 export class LoginUserDto {
-  @ApiProperty({ example: 'veronikamelnik00@mail.ru', description: 'Уникальный email' })
+
+  @ApiProperty({ example: 'admin@admin.com' })
   @IsString({ message: 'Должно быть строкой' })
   @IsEmail({}, { message: 'Неккоректный email' })
   email: string;
 
-  @ApiProperty({ example: '246810', description: 'Пароль' })
+  @ApiProperty({ example: 'Admin123!' })
   @IsString({ message: 'Должно быть строкой' })
   @Length(4, 16, { message: 'Пароль должен 4-16 символов!' })
   password: string;
