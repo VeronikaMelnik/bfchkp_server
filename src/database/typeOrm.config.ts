@@ -52,6 +52,6 @@ export const typeOrmConfig = () => {
       News,
     ],
     migrations: Object.values(Migrations),
-    migrationsRun: true,
+    migrationsRun: !!process.env.POSTGRES_IS_MIGRATIONS_RUN,
   });
 };
