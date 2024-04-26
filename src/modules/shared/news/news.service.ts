@@ -85,7 +85,7 @@ export class NewsService {
       .leftJoinAndSelect('news.description', 'description')
       .leftJoinAndSelect('news.image', 'image')
       .where(
-        'LOWER(title.ru) LIKE :searchValue OR LOWER(description.ru) LIKE :searchValue',
+        'LOWER(description.ru) LIKE :searchValue',
         { searchValue: `%${searchValue.toLowerCase()}%` },
       )
       .take(perPage)
@@ -97,7 +97,6 @@ export class NewsService {
   async getOne(id: number) {
     return this.newsRepository
       .createQueryBuilder('news')
-      .leftJoinAndSelect('news.title', 'title')
       .leftJoinAndSelect('news.description', 'description')
       .leftJoinAndSelect('news.image', 'image')
       .where({ id })
@@ -106,7 +105,6 @@ export class NewsService {
 }
 
 interface CreationProps {
-  title: newDictionary;
   description: newDictionary;
 }
 interface GetAllProps {
