@@ -22,8 +22,5 @@ export class GetAllNewsDto {
 
 export class CreateNewsDto {
   @ApiProperty()
-  title: UpdateDictionaryDto;
-
-  @ApiProperty()
   description: UpdateDictionaryDto;
 }

@@ -9,27 +9,21 @@ export class NewsService {
     private dataSource: DataSource,
     @InjectRepository(News)
     private newsRepository: Repository<News>,
-  ) { }
-  async create({ description, title }: CreationProps) {
+  ) {}
+  async create({ description }: CreationProps) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    const {} = title
     try {
-      const newTitle = queryRunner.manager.create(Dictionary, {
-        ...title,
-      });
       const newDescription = queryRunner.manager.create(Dictionary, {
-       ...description,
+        ...description,
       });
 
-      const [savedTitle, savedDescription] = await Promise.all([
-        queryRunner.manager.save(Dictionary, newTitle),
+      const [savedDescription] = await Promise.all([
         queryRunner.manager.save(Dictionary, newDescription),
       ]);
 
       const newNews = queryRunner.manager.create(News, {
-        titleId: savedTitle.id,
         descriptionId: savedDescription.id,
       })
       await queryRunner.manager.save(News, newNews);
@@ -68,7 +62,7 @@ export class NewsService {
 
     try {
       await Promise.all([
-        queryRunner.manager.delete(Dictionary, [{ id: news.descriptionId }, { id: news.titleId }]),
+        queryRunner.manager.delete(Dictionary, [{ id: news.descriptionId }]),
         news.imageId && queryRunner.manager.delete(ImageEntity, [{ id: news.imageId }]),
       ])
       await queryRunner.commitTransaction();
@@ -85,10 +79,9 @@ export class NewsService {
     }
   }
 
-  async getAll({ page, perPage, searchValue='' }: GetAllProps) {
+  async getAll({ page, perPage, searchValue = '' }: GetAllProps) {
     const [data, total] = await this.newsRepository
       .createQueryBuilder('news')
-      .leftJoinAndSelect('news.title', 'title')
       .leftJoinAndSelect('news.description', 'description')
       .leftJoinAndSelect('news.image', 'image')
       .where(
@@ -123,15 +116,15 @@ interface GetAllProps {
 }
 
 interface newDictionary extends Omit<
-Dictionary, 'updatedAt'
-| 'createdAt'
-| 'hasId'
-| 'recover'
-| 'reload'
-| 'remove'
-| 'save'
-| 'softRemove'
-| 'id'
->{
+  Dictionary, 'updatedAt'
+  | 'createdAt'
+  | 'hasId'
+  | 'recover'
+  | 'reload'
+  | 'remove'
+  | 'save'
+  | 'softRemove'
+  | 'id'
+> {
   ru: string
 }

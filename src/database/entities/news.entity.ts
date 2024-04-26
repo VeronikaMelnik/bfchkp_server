@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne,  } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { ImageEntity } from './image.entity';
 import { Dictionary } from './dictionary.entity';
@@ -8,14 +8,8 @@ export class News extends BaseEntity {
   @OneToOne(() => ImageEntity)
   @JoinColumn({ name: 'imageId' })
   image: ImageEntity;
-  @Column({nullable: true})
+  @Column({ nullable: true })
   imageId: number;
-
-  @OneToOne(() => Dictionary)
-  @JoinColumn({ name: 'titleId' })
-  title: Dictionary;
-  @Column({ nullable: false })
-  titleId: number;
 
   @OneToOne(() => Dictionary)
   @JoinColumn({ name: 'descriptionId' })
