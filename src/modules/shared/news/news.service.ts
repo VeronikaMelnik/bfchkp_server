@@ -9,7 +9,7 @@ export class NewsService {
     private dataSource: DataSource,
     @InjectRepository(News)
     private newsRepository: Repository<News>,
-  ) { }
+  ) {}
   async create({ description, title }: CreationProps) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -20,7 +20,7 @@ export class NewsService {
         ...title,
       });
       const newDescription = queryRunner.manager.create(Dictionary, {
-       ...description,
+        ...description,
       });
 
       const [savedTitle, savedDescription] = await Promise.all([
@@ -39,6 +39,7 @@ export class NewsService {
         `News id ${newNews.id} created`,
         'News',
       );
+      return { id: newNews.id }
     } catch (error) {
       Logger.error('Creation news', 'News');
       await queryRunner.rollbackTransaction();
@@ -85,7 +86,7 @@ export class NewsService {
     }
   }
 
-  async getAll({ page, perPage, searchValue='' }: GetAllProps) {
+  async getAll({ page, perPage, searchValue = '' }: GetAllProps) {
     const [data, total] = await this.newsRepository
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.title', 'title')
@@ -123,15 +124,15 @@ interface GetAllProps {
 }
 
 interface newDictionary extends Omit<
-Dictionary, 'updatedAt'
-| 'createdAt'
-| 'hasId'
-| 'recover'
-| 'reload'
-| 'remove'
-| 'save'
-| 'softRemove'
-| 'id'
->{
+  Dictionary, 'updatedAt'
+  | 'createdAt'
+  | 'hasId'
+  | 'recover'
+  | 'reload'
+  | 'remove'
+  | 'save'
+  | 'softRemove'
+  | 'id'
+> {
   ru: string
 }
