@@ -7,16 +7,17 @@ import { Repository } from "typeorm";
 export class DictionaryService {
   constructor(
     @InjectRepository(Dictionary)
-    private newsRepository: Repository<Dictionary>,
+    private dictionaryRepository: Repository<Dictionary>,
   ) { }
 
   async findById(id: number) {
-    return this.newsRepository.findOneBy({ id })
+    return this.dictionaryRepository.findOneBy({ id })
   }
 
-  async update(dictionary: Dictionary) {
-    return this.newsRepository.save(dictionary)
+  async save(dictionary: Dictionary) {
+    return this.dictionaryRepository.save(dictionary)
   }
+  update = this.dictionaryRepository.update
 
 }
 

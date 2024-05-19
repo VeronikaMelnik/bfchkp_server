@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Admin } from 'typeorm';
 import { CreateTeamDto } from 'src/types/dto/team.dto';
@@ -66,6 +66,20 @@ export class AdminsAccessController {
   @Post('/news')
   createNews(@Body() data: CreateNewsDto) {
     return this.adminsService.createNews(data);
+  }
+
+  @ApiOperation({ summary: 'Создание news' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Patch('/news/:id')
+  updateNews(@Param('id', ParseIntPipe) id: number, @Body() data: CreateNewsDto) {
+    return this.adminsService.updateNews({...data, id});
+  }
+
+  @ApiOperation({ summary: 'Deleting news' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Delete('/news/:id')
+  deleteNews(@Param('id', ParseIntPipe) id: number) {
+    return this.adminsService.deleteNews(id);
   }
 
   @ApiOperation({ summary: 'Update dictionary' })

@@ -83,7 +83,18 @@ export class AdminsAccessService {
         dict[key] = value
       }
     })
-    return this.dictionaryService.update(dict)
+    return this.dictionaryService.save(dict)
+  }
+
+  async updateNews({description, id, title}: UpdateNewsProps) {
+    const news = await this.newsService.findById(id)
+    if (!news) {
+      throw new  NotFoundException();
+    }
+    await Promise.all([
+      this.dictionaryService.update({id: news.title.id}, title),
+      this.dictionaryService.update({id: news.description.id}, description),
+    ])
   }
 }
 
@@ -92,17 +103,25 @@ interface CreateImageProps {
   id: number;
   user: TokenPayload
 }
-interface UpdateDictionaryProps extends Partial<
-  Omit<
-    Dictionary, 'updatedAt'
-    | 'createdAt'
-    | 'hasId'
-    | 'recover'
-    | 'reload'
-    | 'remove'
-    | 'save'
-    | 'softRemove'
-  >
-> {
+
+type Locales = Partial<
+Omit<
+  Dictionary, 'updatedAt'
+  | 'createdAt'
+  | 'hasId'
+  | 'recover'
+  | 'reload'
+  | 'remove'
+  | 'save'
+  | 'softRemove'
+>>
+
+interface UpdateNewsProps {
+  id: number
+  title: Locales;
+  description: Locales;
+
+}
+interface UpdateDictionaryProps extends Locales {
   id: number;
 }
