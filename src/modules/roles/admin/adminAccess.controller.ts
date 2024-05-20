@@ -20,7 +20,7 @@ import { ONE_MB_IN_BYTES } from 'src/constants';
 @Controller('api/admin')
 export class AdminsAccessController {
 
-  constructor(private adminsService: AdminsAccessService) { }
+  constructor(private adminsService: AdminsAccessService) {}
 
   @ApiOperation({ summary: 'Создание админа' })
   @ApiResponse({ status: 200, type: Admin })
@@ -68,14 +68,14 @@ export class AdminsAccessController {
     return this.adminsService.createNews(data);
   }
 
-  @ApiOperation({ summary: 'Создание news' })
+  @ApiOperation({ summary: 'Редактирование news' })
   @ApiResponse({ status: 200, type: Admin })
   @Patch('/news/:id')
   updateNews(@Param('id', ParseIntPipe) id: number, @Body() data: CreateNewsDto) {
-    return this.adminsService.updateNews({...data, id});
+    return this.adminsService.updateNews({ ...data, id });
   }
 
-  @ApiOperation({ summary: 'Deleting news' })
+  @ApiOperation({ summary: 'Удаление news' })
   @ApiResponse({ status: 200, type: Admin })
   @Delete('/news/:id')
   deleteNews(@Param('id', ParseIntPipe) id: number) {
