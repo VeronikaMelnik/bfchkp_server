@@ -10,7 +10,7 @@ export class CoachesAccessService {
     return this.coachService.create(data)
   }
 
-  getAll() {
-    return this.coachService.getAll()
+  getAllCoaches() {
+    return this.coachService.getAllCoaches()
   }
 }

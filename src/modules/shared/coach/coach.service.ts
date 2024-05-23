@@ -19,10 +19,15 @@ export class CoachesService {
     const res = await this.coachesService.save(props);
     return res;
   }
-  async getAll() {
-    const users = await this.coachesService.find();
-    return users;
+  async getAllCoaches() {
+    const data = await this.coachesService
+      .createQueryBuilder('coach')
+      .select(['coach.id', 'coach.personId', 'coach.experience', 'coach.person'])
+      .leftJoinAndSelect('coach.person', 'person')
+      .getMany();
+    return data;
   }
+
   async findById(id: number) {
     const data = this.coachesService.findOneBy({ id });
     return data;
