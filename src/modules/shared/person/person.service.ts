@@ -9,7 +9,7 @@ export class PersonsService {
     @InjectRepository(Person)
     private personRepository: Repository<Person>,
   ) {}
-  async create(props: CreationProps ) {
+  async create(props: CreationProps) {
     const person = this.personRepository.create(props);
     const res = await this.personRepository.save(person);
     return res;
@@ -22,6 +22,7 @@ export class PersonsService {
     const users = await this.personRepository.find();
     return users;
   }
+
   async findById(id: number) {
     const data = this.personRepository.findOneBy({ id });
     return data;

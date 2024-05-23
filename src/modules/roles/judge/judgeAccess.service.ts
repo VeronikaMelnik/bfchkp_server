@@ -14,8 +14,8 @@ export class JudgesAccessService {
     return this.judgeService.create(data)
   }
 
-  getAll() {
-    return this.judgeService.getAll()
+  getAllJudges() {
+    return this.judgeService.getAllJudges()
   }
 
   async findById(id: number) {

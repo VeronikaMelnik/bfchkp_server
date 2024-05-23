@@ -27,7 +27,7 @@ export class AdminsAccessService {
     private newsService: NewsService,
     private imageService: ImageService,
     private dictionaryService: DictionaryService,
-  ) { }
+  ) {}
 
   createAdmin(data: CreateAdminDto) {
     return this.adminService.create(data)
@@ -86,14 +86,14 @@ export class AdminsAccessService {
     return this.dictionaryService.save(dict)
   }
 
-  async updateNews({description, id, title}: UpdateNewsProps) {
+  async updateNews({ description, id, title }: UpdateNewsProps) {
     const news = await this.newsService.findById(id)
     if (!news) {
-      throw new  NotFoundException();
+      throw new NotFoundException();
     }
     await Promise.all([
-      this.dictionaryService.update({id: news.title.id}, title),
-      this.dictionaryService.update({id: news.description.id}, description),
+      this.dictionaryService.update({ id: news.title.id }, title),
+      this.dictionaryService.update({ id: news.description.id }, description),
     ])
   }
 }
@@ -105,16 +105,16 @@ interface CreateImageProps {
 }
 
 type Locales = Partial<
-Omit<
-  Dictionary, 'updatedAt'
-  | 'createdAt'
-  | 'hasId'
-  | 'recover'
-  | 'reload'
-  | 'remove'
-  | 'save'
-  | 'softRemove'
->>
+  Omit<
+    Dictionary, 'updatedAt'
+    | 'createdAt'
+    | 'hasId'
+    | 'recover'
+    | 'reload'
+    | 'remove'
+    | 'save'
+    | 'softRemove'
+  >>
 
 interface UpdateNewsProps {
   id: number

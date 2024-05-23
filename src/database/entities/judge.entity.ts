@@ -8,7 +8,7 @@ export class Judge extends BaseEntity {
   @JoinColumn({
     name: 'personId',
   })
-  team: Person;
+  person: Person;
   @Column()
   personId: number;
 }

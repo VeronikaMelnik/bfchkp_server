@@ -23,7 +23,7 @@ export class JudgesAccessController {
   @ApiOperation({ summary: 'Получение всех судей' })
   @ApiResponse({ status: 200, type: [Judge] })
   @Get()
-  getAll() {
-    return this.judgeService.getAll();
+  getAllJudges() {
+    return this.judgeService.getAllJudges();
   }
 }
