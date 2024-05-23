@@ -22,8 +22,9 @@ export class CoachesService {
   async getAllCoaches() {
     const data = await this.coachesService
       .createQueryBuilder('coach')
-      .select(['coach.id', 'coach.personId', 'coach.experience', 'coach.person'])
+      .select(['coach.id', 'coach.personId', 'coach.experience', 'coach.person', 'coach.team'])
       .leftJoinAndSelect('coach.person', 'person')
+      .leftJoinAndSelect('coach.team', 'team')
       .getMany();
     return data;
   }
