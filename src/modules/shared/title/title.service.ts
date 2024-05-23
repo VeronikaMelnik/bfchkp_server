@@ -25,6 +25,7 @@ export class TitlesService {
       .select(['title.id', 'title.name', 'title.resultId', 'title.memberId', 'title.result', 'title.member'])
       .leftJoinAndSelect('title.result', 'result')
       .leftJoinAndSelect('title.member', 'member')
+      .leftJoinAndSelect('member.person', 'person')
       .getMany();
     return data;
   }
