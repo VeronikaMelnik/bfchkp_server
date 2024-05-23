@@ -4,6 +4,8 @@ import { Coach } from '../../../database/entities/coach.entity';
 import { CreateCoachDto } from '../../../types/dto/coach.dto';
 import { CoachesAccessService } from './coachAccess.service';
 import { CoachRoleGuard } from 'src/guards/coach.guard';
+import { Team } from 'src/database';
+import { TeamsService } from 'src/modules/shared/team/team.service';
 
 @ApiTags('Команды тренера')
 @ApiBearerAuth()
@@ -11,7 +13,10 @@ import { CoachRoleGuard } from 'src/guards/coach.guard';
 @Controller('coaches')
 export class CoachesAccessController {
 
-  constructor(private coachService: CoachesAccessService) {}
+  constructor(
+    private coachService: CoachesAccessService,
+    private teamService: TeamsService
+  ) {}
 
   @ApiOperation({ summary: 'Создание тренера' })
   @ApiResponse({ status: 200, type: Coach })
@@ -25,5 +30,12 @@ export class CoachesAccessController {
   @Get()
   getAllCoaches() {
     return this.coachService.getAllCoaches();
+  }
+
+  @ApiOperation({ summary: 'Получение всех команд' })
+  @ApiResponse({ status: 200, type: [Team] })
+  @Get('/teams')
+  getAllTeams() {
+    return this.teamService.getAllTeams();
   }
 }

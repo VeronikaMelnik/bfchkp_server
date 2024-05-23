@@ -19,10 +19,17 @@ export class ResultsService {
     const res = await this.resultsService.save(props);
     return res;
   }
-  async getAll() {
-    const users = await this.resultsService.find();
-    return users;
+  async getAllResults() {
+    const data = await this.resultsService
+      .createQueryBuilder('result')
+      .select(['result.id', 'result.place', 'result.championshipId', 'result.memberId', 'result.championship', 'result.member'])
+      .leftJoinAndSelect('result.championship', 'championship')
+      .leftJoinAndSelect('result.member', 'member')
+      .leftJoinAndSelect('member.person', 'person')
+      .getMany();
+    return data;
   }
+
   async findById(id: number) {
     const data = this.resultsService.findOneBy({ id });
     return data;

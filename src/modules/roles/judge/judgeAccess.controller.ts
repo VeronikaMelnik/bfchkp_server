@@ -4,6 +4,8 @@ import { Judge } from '../../../database/entities/judge.entity';
 import { CreateJudgeDto } from '../../../types/dto/judge.dto';
 import { JudgesAccessService } from './judgeAccess.service';
 import { JudgeRoleGuard } from 'src/guards/judge.guard';
+import { Result } from 'src/database';
+import { ResultsService } from 'src/modules/shared/result/result.service';
 
 @ApiTags('Команды судьи')
 @ApiBearerAuth()
@@ -11,7 +13,10 @@ import { JudgeRoleGuard } from 'src/guards/judge.guard';
 @Controller('judges')
 export class JudgesAccessController {
 
-  constructor(private judgeService: JudgesAccessService) {}
+  constructor(
+    private judgeService: JudgesAccessService,
+    private resultService: ResultsService
+  ) {}
 
   @ApiOperation({ summary: 'Создание судьи' })
   @ApiResponse({ status: 200, type: Judge })
@@ -25,5 +30,12 @@ export class JudgesAccessController {
   @Get()
   getAllJudges() {
     return this.judgeService.getAllJudges();
+  }
+
+  @ApiOperation({ summary: 'Получение всех результатов соревнований' })
+  @ApiResponse({ status: 200, type: [Result] })
+  @Get('/results')
+  getAllResults() {
+    return this.resultService.getAllResults();
   }
 }

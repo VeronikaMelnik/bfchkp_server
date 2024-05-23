@@ -19,7 +19,7 @@ export class DisciplinesService {
     const res = await this.disciplinesService.save(props);
     return res;
   }
-  async getAll() {
+  async getAllDisciplines() {
     const users = await this.disciplinesService.find();
     return users;
   }

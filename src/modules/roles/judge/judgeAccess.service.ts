@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JudgesService } from "src/modules/shared/judge/judge.service";
 import { PersonsService } from "src/modules/shared/person/person.service";
+import { ResultsService } from "src/modules/shared/result/result.service";
 import { CreateJudgeDto } from "src/types/dto/judge.dto";
 
 @Injectable()
@@ -8,6 +9,7 @@ export class JudgesAccessService {
   constructor(
     private judgeService: JudgesService,
     private personService: PersonsService,
+    private resultService: ResultsService,
   ) {}
 
   create(data: CreateJudgeDto) {
@@ -16,6 +18,10 @@ export class JudgesAccessService {
 
   getAllJudges() {
     return this.judgeService.getAllJudges()
+  }
+
+  getAllResults() {
+    return this.resultService.getAllResults()
   }
 
   async findById(id: number) {

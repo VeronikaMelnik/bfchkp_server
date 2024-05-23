@@ -15,6 +15,9 @@ import { ImageService } from "src/modules/shared/image/image.service";
 import { TokenPayload } from "src/types/token/token.types";
 import { DictionaryService } from "src/modules/shared/dictionary/dictionary.service";
 import { Dictionary } from "src/database";
+import { MembersService } from "src/modules/shared/member/member.service";
+import { DisciplinesService } from "src/modules/shared/discipline/discipline.service";
+import { TitlesService } from "src/modules/shared/title/title.service";
 
 @Injectable()
 export class AdminsAccessService {
@@ -27,6 +30,9 @@ export class AdminsAccessService {
     private newsService: NewsService,
     private imageService: ImageService,
     private dictionaryService: DictionaryService,
+    private memberService: MembersService,
+    private disciplineService: DisciplinesService,
+    private titleService: TitlesService,
   ) {}
 
   createAdmin(data: CreateAdminDto) {
@@ -96,7 +102,19 @@ export class AdminsAccessService {
       this.dictionaryService.update({ id: news.description.id }, description),
     ])
   }
+  getAllMembers() {
+    return this.memberService.getAllMembers()
+  }
+  getAllDisciplines() {
+    return this.disciplineService.getAllDisciplines()
+  }
+
+  getAllTitles() {
+    return this.titleService.getAllTitles()
+  }
 }
+
+
 
 interface CreateImageProps {
   data: Buffer;

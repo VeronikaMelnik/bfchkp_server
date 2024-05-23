@@ -19,9 +19,14 @@ export class TitlesService {
     const res = await this.titlesService.save(props);
     return res;
   }
-  async getAll() {
-    const users = await this.titlesService.find();
-    return users;
+  async getAllTitles() {
+    const data = await this.titlesService
+      .createQueryBuilder('title')
+      .select(['title.id', 'title.name', 'title.resultId', 'title.memberId', 'title.result', 'title.member'])
+      .leftJoinAndSelect('title.result', 'result')
+      .leftJoinAndSelect('title.member', 'member')
+      .getMany();
+    return data;
   }
   async findById(id: number) {
     const data = this.titlesService.findOneBy({ id });

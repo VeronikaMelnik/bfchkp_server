@@ -13,6 +13,10 @@ import { UpdateDictionaryDto } from 'src/types/dto/dictionary.dto';
 import { fileSchema } from 'src/types/file'
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ONE_MB_IN_BYTES } from 'src/constants';
+import { Discipline, Member, Title } from 'src/database';
+import { MembersService } from 'src/modules/shared/member/member.service';
+import { DisciplinesService } from 'src/modules/shared/discipline/discipline.service';
+import { TitlesService } from 'src/modules/shared/title/title.service';
 
 @ApiTags('Команды администратора')
 @ApiBearerAuth()
@@ -20,7 +24,13 @@ import { ONE_MB_IN_BYTES } from 'src/constants';
 @Controller('api/admin')
 export class AdminsAccessController {
 
-  constructor(private adminsService: AdminsAccessService) {}
+  constructor(
+    private adminsService: AdminsAccessService,
+    private memberService: MembersService,
+    private disciplineService: DisciplinesService,
+    private titleService: TitlesService,
+  ) {
+  }
 
   @ApiOperation({ summary: 'Создание админа' })
   @ApiResponse({ status: 200, type: Admin })
@@ -94,6 +104,27 @@ export class AdminsAccessController {
   @Get('/users')
   getAll(@Query() data: GetAllUsersDto) {
     return this.adminsService.getAllUsers(data);
+  }
+
+  @ApiOperation({ summary: 'Получение всех участников федераций' })
+  @ApiResponse({ status: 200, type: [Member] })
+  @Get('/members')
+  getAllMembers() {
+    return this.memberService.getAllMembers();
+  }
+
+  @ApiOperation({ summary: 'Получение всех дисциплин' })
+  @ApiResponse({ status: 200, type: [Discipline] })
+  @Get('/disciplines')
+  getAllDisciplines() {
+    return this.disciplineService.getAllDisciplines();
+  }
+
+  @ApiOperation({ summary: 'Получение всех титулов' })
+  @ApiResponse({ status: 200, type: [Title] })
+  @Get('/titles')
+  getAllTitles() {
+    return this.titleService.getAllTitles();
   }
 
 }

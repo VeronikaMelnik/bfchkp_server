@@ -25,6 +25,9 @@ import { DisciplinesModule } from './shared/discipline/discipline.module';
 import { ImageModule } from './shared/image/image.module';
 import { NewsModule } from './shared/news/news.module';
 import { DictionaryModule } from './shared/dictionary/dictionary.module';
+import { MembersModule } from './shared/member/member.module';
+import { TitlesModule } from './shared/title/title.module';
+import { ResultsModule } from './shared/result/result.module';
 
 
 @Module({
@@ -68,6 +71,9 @@ import { DictionaryModule } from './shared/dictionary/dictionary.module';
     ImageModule,
     NewsModule,
     DictionaryModule,
+    MembersModule,
+    TitlesModule,
+    ResultsModule,
   ],
 })
 export class AppModule {}

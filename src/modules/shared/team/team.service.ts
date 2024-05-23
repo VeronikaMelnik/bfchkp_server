@@ -19,7 +19,7 @@ export class TeamsService {
     const res = await this.teamsService.save(props);
     return res;
   }
-  async getAll() {
+  async getAllTeams() {
     const users = await this.teamsService.find();
     return users;
   }
