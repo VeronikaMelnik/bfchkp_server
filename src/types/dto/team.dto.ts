@@ -33,5 +33,6 @@ export class CreateTeamDto {
   address?: string;
 
   @IsString({ message: 'Должно быть строкой' })
+  @IsOptional()
   logo?: string;
 }

@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { TeamsService } from "../../shared/team/team.service";
 import { CreateAdminDto } from "src/types/dto/admin.dto";
 import { CreateTeamDto } from "src/types/dto/team.dto";
@@ -18,7 +18,8 @@ import { Dictionary } from "src/database";
 import { MembersService } from "src/modules/shared/member/member.service";
 import { DisciplinesService } from "src/modules/shared/discipline/discipline.service";
 import { TitlesService } from "src/modules/shared/title/title.service";
-import { GetAllMembersDto } from "src/types/dto/member.dto";
+import { CreateMemberDto, GetAllMembersDto } from "src/types/dto/member.dto";
+import { PersonsService } from "src/modules/shared/person/person.service";
 
 @Injectable()
 export class AdminsAccessService {
@@ -34,6 +35,7 @@ export class AdminsAccessService {
     private memberService: MembersService,
     private disciplineService: DisciplinesService,
     private titleService: TitlesService,
+    private personService: PersonsService,
   ) {}
 
   createAdmin(data: CreateAdminDto) {
@@ -102,6 +104,24 @@ export class AdminsAccessService {
       this.dictionaryService.update({id: news.titleId, dictionary: title}),
       this.dictionaryService.update({id: news.descriptionId, dictionary: description}, ),
     ])
+  }
+
+  async createMember({personId, teamId}: CreateMemberDto) {
+    const team = await this.teamService.findById(teamId)
+    const person = await this.personService.findById(personId)
+    if (!team || !person) {
+      throw new HttpException('not found', HttpStatus.BAD_REQUEST)
+    }
+    return this.memberService.create({personId, teamId})
+  }
+  
+  async deleteMember(id: number) {
+    try {
+      this.memberService.remove(id)
+    } catch (error) {
+      throw new HttpException('not found', HttpStatus.BAD_REQUEST)
+    }
+    return {data: 'ok'}
   }
   getAllMembers(data: GetAllMembersDto) {
     return this.memberService.getAllMembers(data)

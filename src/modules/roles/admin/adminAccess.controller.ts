@@ -17,7 +17,7 @@ import { Discipline, Member, Title } from 'src/database';
 import { MembersService } from 'src/modules/shared/member/member.service';
 import { DisciplinesService } from 'src/modules/shared/discipline/discipline.service';
 import { TitlesService } from 'src/modules/shared/title/title.service';
-import { GetAllMembersDto } from 'src/types/dto/member.dto';
+import { CreateMemberDto, GetAllMembersDto } from 'src/types/dto/member.dto';
 
 @ApiTags('Команды администратора')
 @ApiBearerAuth()
@@ -52,6 +52,20 @@ export class AdminsAccessController {
   @Post('/team')
   createTeam(@Body() data: CreateTeamDto) {
     return this.adminsService.createTeam(data);
+  }
+
+  @ApiOperation({ summary: 'Добавление участника в команду' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Post('/team/members')
+  createMember(@Body() data: CreateMemberDto) {
+    return this.adminsService.createMember(data);
+  }
+
+  @ApiOperation({ summary: 'Удаление участника из команды' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Delete('/team/member/:id')
+  deleteMember(@Param('id', ParseIntPipe) id: number) {
+    return this.adminsService.deleteMember(id);
   }
 
   @ApiOperation({ summary: 'Creation news image' })

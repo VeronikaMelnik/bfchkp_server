@@ -44,6 +44,9 @@ export class MembersService {
     const data = this.membersService.findBy({ teamId });
     return data;
   }
+  remove(id: number) {
+    return this.membersService.delete({id})
+  }
 }
 
 interface GetAllProps {

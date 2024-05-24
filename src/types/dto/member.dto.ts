@@ -22,9 +22,9 @@ export class GetAllMembersDto {
 export class CreateMemberDto {
   @ApiProperty({ example: '1', description: 'ID' })
   @IsNumber({}, { message: 'Должно быть числом' })
-  teamId?: number;
+  teamId: number;
 
   @ApiProperty({ example: '1', description: 'ID' })
   @IsNumber({}, { message: 'Должно быть числом' })
-  personId?: number;
+  personId: number;
 }
