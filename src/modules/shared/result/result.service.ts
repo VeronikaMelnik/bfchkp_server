@@ -19,15 +19,22 @@ export class ResultsService {
     const res = await this.resultsService.save(props);
     return res;
   }
-  async getAllResults() {
-    const data = await this.resultsService
+
+  async getAllResults({ page, perPage, searchValue = '' }: GetAllProps) {
+    const [data, total] = await this.resultsService
       .createQueryBuilder('result')
       .select(['result.id', 'result.place', 'result.championshipId', 'result.memberId', 'result.championship', 'result.member'])
       .leftJoinAndSelect('result.championship', 'championship')
       .leftJoinAndSelect('result.member', 'member')
       .leftJoinAndSelect('member.person', 'person')
-      .getMany();
-    return data;
+      .where(
+        'result.place::text LIKE :searchValue OR LOWER(person.name) LIKE :searchValue OR LOWER(person.lastName) LIKE :searchValue OR LOWER(championship.name) LIKE :searchValue OR TO_CHAR(championship.date, \'YYYY-MM-DD HH24:MI:SS\') LIKE :searchValue',
+        { searchValue: `%${searchValue.toLowerCase()}%` },
+      )
+      .take(perPage)
+      .skip(perPage * (page - 1))
+      .getManyAndCount();
+    return { data, total };
   }
 
   async findById(id: number) {
@@ -43,3 +50,10 @@ export class ResultsService {
     return data;
   }
 }
+
+interface GetAllProps {
+  page: number,
+  perPage: number,
+  searchValue: string
+}
+

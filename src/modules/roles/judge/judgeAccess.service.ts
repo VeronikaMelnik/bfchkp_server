@@ -3,6 +3,7 @@ import { JudgesService } from "src/modules/shared/judge/judge.service";
 import { PersonsService } from "src/modules/shared/person/person.service";
 import { ResultsService } from "src/modules/shared/result/result.service";
 import { CreateJudgeDto } from "src/types/dto/judge.dto";
+import { GetAllResultsDto } from "src/types/dto/result.dto";
 
 @Injectable()
 export class JudgesAccessService {
@@ -20,8 +21,8 @@ export class JudgesAccessService {
     return this.judgeService.getAllJudges()
   }
 
-  getAllResults() {
-    return this.resultService.getAllResults()
+  getAllResults(data: GetAllResultsDto) {
+    return this.resultService.getAllResults(data)
   }
 
   async findById(id: number) {

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CoachesService } from "src/modules/shared/coach/coach.service";
 import { TeamsService } from "src/modules/shared/team/team.service";
 import { CreateCoachDto } from "src/types/dto/coach.dto";
+import { GetAllTeamsDto } from "src/types/dto/team.dto";
 
 @Injectable()
 export class CoachesAccessService {
@@ -18,7 +19,7 @@ export class CoachesAccessService {
     return this.coachService.getAllCoaches()
   }
 
-  getAllTeams() {
-    return this.teamService.getAllTeams()
+  getAllTeams(data: GetAllTeamsDto) {
+    return this.teamService.getAllTeams(data)
   }
 }

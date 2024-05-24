@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Coach } from '../../../database/entities/coach.entity';
 import { CreateCoachDto } from '../../../types/dto/coach.dto';
@@ -6,6 +6,7 @@ import { CoachesAccessService } from './coachAccess.service';
 import { CoachRoleGuard } from 'src/guards/coach.guard';
 import { Team } from 'src/database';
 import { TeamsService } from 'src/modules/shared/team/team.service';
+import { GetAllTeamsDto } from 'src/types/dto/team.dto';
 
 @ApiTags('Команды тренера')
 @ApiBearerAuth()
@@ -35,7 +36,7 @@ export class CoachesAccessController {
   @ApiOperation({ summary: 'Получение всех команд' })
   @ApiResponse({ status: 200, type: [Team] })
   @Get('/teams')
-  getAllTeams() {
-    return this.teamService.getAllTeams();
+  getAllTeams(@Query() data: GetAllTeamsDto) {
+    return this.teamService.getAllTeams(data);
   }
 }

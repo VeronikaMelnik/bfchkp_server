@@ -17,6 +17,7 @@ import { Discipline, Member, Title } from 'src/database';
 import { MembersService } from 'src/modules/shared/member/member.service';
 import { DisciplinesService } from 'src/modules/shared/discipline/discipline.service';
 import { TitlesService } from 'src/modules/shared/title/title.service';
+import { GetAllMembersDto } from 'src/types/dto/member.dto';
 
 @ApiTags('Команды администратора')
 @ApiBearerAuth()
@@ -109,8 +110,8 @@ export class AdminsAccessController {
   @ApiOperation({ summary: 'Получение всех участников федераций' })
   @ApiResponse({ status: 200, type: [Member] })
   @Get('/members')
-  getAllMembers() {
-    return this.memberService.getAllMembers();
+  getAllMembers(@Query() data: GetAllMembersDto) {
+    return this.memberService.getAllMembers(data);
   }
 
   @ApiOperation({ summary: 'Получение всех дисциплин' })

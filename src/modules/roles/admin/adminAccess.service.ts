@@ -18,6 +18,7 @@ import { Dictionary } from "src/database";
 import { MembersService } from "src/modules/shared/member/member.service";
 import { DisciplinesService } from "src/modules/shared/discipline/discipline.service";
 import { TitlesService } from "src/modules/shared/title/title.service";
+import { GetAllMembersDto } from "src/types/dto/member.dto";
 
 @Injectable()
 export class AdminsAccessService {
@@ -102,8 +103,8 @@ export class AdminsAccessService {
       this.dictionaryService.update({ id: news.description.id }, description),
     ])
   }
-  getAllMembers() {
-    return this.memberService.getAllMembers()
+  getAllMembers(data: GetAllMembersDto) {
+    return this.memberService.getAllMembers(data)
   }
   getAllDisciplines() {
     return this.disciplineService.getAllDisciplines()

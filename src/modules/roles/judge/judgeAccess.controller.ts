@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Judge } from '../../../database/entities/judge.entity';
 import { CreateJudgeDto } from '../../../types/dto/judge.dto';
@@ -6,6 +6,7 @@ import { JudgesAccessService } from './judgeAccess.service';
 import { JudgeRoleGuard } from 'src/guards/judge.guard';
 import { Result } from 'src/database';
 import { ResultsService } from 'src/modules/shared/result/result.service';
+import { GetAllResultsDto } from 'src/types/dto/result.dto';
 
 @ApiTags('Команды судьи')
 @ApiBearerAuth()
@@ -35,7 +36,7 @@ export class JudgesAccessController {
   @ApiOperation({ summary: 'Получение всех результатов соревнований' })
   @ApiResponse({ status: 200, type: [Result] })
   @Get('/results')
-  getAllResults() {
-    return this.resultService.getAllResults();
+  getAllResults(@Query() data: GetAllResultsDto) {
+    return this.resultService.getAllResults(data);
   }
 }

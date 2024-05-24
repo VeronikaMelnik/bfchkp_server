@@ -19,10 +19,20 @@ export class TeamsService {
     const res = await this.teamsService.save(props);
     return res;
   }
-  async getAllTeams() {
-    const users = await this.teamsService.find();
-    return users;
+
+  async getAllTeams({ page, perPage, searchValue = '' }: GetAllProps) {
+    const [data, total] = await this.teamsService
+      .createQueryBuilder('teams')
+      .where(
+        'LOWER(teams.name) LIKE :searchValue OR LOWER(teams.city) LIKE :searchValue OR LOWER(teams.address) LIKE :searchValue',
+        { searchValue: `%${searchValue.toLowerCase()}%` },
+      )
+      .take(perPage)
+      .skip(perPage * (page - 1))
+      .getManyAndCount();
+    return { data, total };
   }
+
   async findById(id: number) {
     const data = this.teamsService.findOneBy({ id });
     return data;
@@ -35,4 +45,10 @@ export class TeamsService {
     const data = this.teamsService.findBy({ address });
     return data;
   }
+}
+
+interface GetAllProps {
+  page: number,
+  perPage: number,
+  searchValue: string
 }

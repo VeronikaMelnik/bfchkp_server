@@ -20,14 +20,20 @@ export class MembersService {
     return res;
   }
 
-  async getAllMembers() {
-    const data = await this.membersService
+  async getAllMembers({ page, perPage, searchValue = '' }: GetAllProps) {
+    const [data, total] = await this.membersService
       .createQueryBuilder('member')
       .select(['member.id', 'member.personId', 'member.person', 'member.team'])
       .leftJoinAndSelect('member.person', 'person')
       .leftJoinAndSelect('member.team', 'team')
-      .getMany();
-    return data;
+      .where(
+        'LOWER(person.name) LIKE :searchValue OR LOWER(person.lastName) LIKE :searchValue OR LOWER(team.name) LIKE :searchValue',
+        { searchValue: `%${searchValue.toLowerCase()}%` },
+      )
+      .take(perPage)
+      .skip(perPage * (page - 1))
+      .getManyAndCount();
+    return { data, total };
   }
 
   async findById(id: number) {
@@ -38,4 +44,10 @@ export class MembersService {
     const data = this.membersService.findBy({ teamId });
     return data;
   }
+}
+
+interface GetAllProps {
+  page: number,
+  perPage: number,
+  searchValue: string
 }

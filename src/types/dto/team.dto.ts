@@ -1,5 +1,23 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsOptional, IsString } from "class-validator";
+
+export class GetAllTeamsDto {
+  @ApiProperty({ default: 1 })
+  @IsOptional()
+  @Transform(value => Number(value) || 1)
+  page: number;
+
+  @ApiProperty({ default: 10 })
+  @IsOptional()
+  @Transform(value => Number(value) || 10)
+  perPage: number;
+
+  @ApiProperty({ required: false, default: '' })
+  @IsString()
+  @IsOptional()
+  searchValue: string;
+}
 
 export class CreateTeamDto {
   @ApiProperty({ example: 'Black Out', description: 'Название команды' })
