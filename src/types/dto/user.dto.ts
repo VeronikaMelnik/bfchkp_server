@@ -51,3 +51,27 @@ export class GetAllUsersDto {
   @IsOptional()
   searchValue: string;
 }
+
+export class UpdateUserDto {
+  @ApiProperty({ example: 'veronikamelnik00@mail.ru', description: 'Уникальный email' })
+  @IsString({ message: 'Должно быть строкой' })
+  @IsEmail({}, { message: 'Неккоректный email' })
+  @IsOptional()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  lastName: string;
+
+  @ApiProperty({ example: '246810', description: 'Пароль' })
+  @IsString({ message: 'Должно быть строкой' })
+  @Length(4, 16, { message: 'Пароль должен 4-16 символов!' })
+  @IsOptional()
+  password: string;
+}

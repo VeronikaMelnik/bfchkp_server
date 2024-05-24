@@ -14,7 +14,7 @@ export class PersonsService {
     const res = await this.personRepository.save(person);
     return res;
   }
-  async update(props: Person) {
+  async save(props: Person) {
     const res = await this.personRepository.save(props);
     return res;
   }

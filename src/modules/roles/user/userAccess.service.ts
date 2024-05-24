@@ -4,6 +4,8 @@ import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "src/modules/shared/user/user.service";
 import { TokenPayload } from "src/types/token/token.types";
 import { ImageService } from "src/modules/shared/image/image.service";
+import { UpdateUserDto } from "src/types/dto/user.dto";
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersAccessService {
@@ -13,7 +15,7 @@ export class UsersAccessService {
     private personService: PersonsService,
     private imageService: ImageService,
     private jwtService: JwtService
-  ) {}
+  ) { }
 
   async getMe(user: TokenPayload) {
     try {
@@ -31,7 +33,7 @@ export class UsersAccessService {
       throw new NotFoundException(`person with id: ${user.personId}`);
     }
     if (person.imageId) {
-      const image = await this.imageService.updateImage({data, id: person.imageId, userId: user.id})
+      const image = await this.imageService.updateImage({ data, id: person.imageId, userId: user.id })
       return image.url
     } else {
       const filePath = `person/${user.personId}`;
@@ -41,10 +43,37 @@ export class UsersAccessService {
         userId: user.id,
       });
       person.imageId = image.id
-      await this.personService.update(person)
+      await this.personService.save(person)
       return image.url
     }
   }
+
+  async update({ email, lastName, name, password, id }: UpdateProps) {
+    const user = await this.userService.getUserData(id);
+    if (email) {
+      user.email = email;
+    }
+    if (password) {
+      const hashPassword = await bcrypt.hash(password, Number(process.env.HASH_ROUNDS));
+      user.password = hashPassword;
+    }
+    const person = await this.personService.findById(user.personId);
+    if (name) {
+      person.name = name;
+    }
+    if (lastName) {
+      person.lastName = lastName;
+    }
+    await Promise.all([
+      this.personService.save(person),
+      this.userService.save(user),
+    ])
+    return {data: user}
+  }
+}
+
+interface UpdateProps extends UpdateUserDto {
+  id: number
 }
 
 interface UploadImageProps {

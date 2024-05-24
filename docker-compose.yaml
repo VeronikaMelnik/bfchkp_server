@@ -5,10 +5,14 @@ services:
     container_name: bfchkp-api
     build:
       context: .
+      dockerfile: DockerfileDev
     env_file:
       - .env
     environment:
       - POSTGRES_HOST=bfchkp-db
+      - PORT=3001
+      - POSTGRES_SSL=
+      - POSTGRES_URL=
     volumes:
       - .:/app
       - /app/node_modules

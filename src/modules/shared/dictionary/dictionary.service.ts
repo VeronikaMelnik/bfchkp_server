@@ -17,7 +17,9 @@ export class DictionaryService {
   async save(dictionary: Dictionary) {
     return this.dictionaryRepository.save(dictionary)
   }
-  update = this.dictionaryRepository.update
+  async update({dictionary, id}:{id: number, dictionary: Partial<Dictionary>}) {
+    this.dictionaryRepository.update({id}, dictionary)
+  }
 
 }
 

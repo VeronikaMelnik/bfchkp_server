@@ -99,8 +99,8 @@ export class AdminsAccessService {
       throw new NotFoundException();
     }
     await Promise.all([
-      this.dictionaryService.update({ id: news.title.id }, title),
-      this.dictionaryService.update({ id: news.description.id }, description),
+      this.dictionaryService.update({id: news.titleId, dictionary: title}),
+      this.dictionaryService.update({id: news.descriptionId, dictionary: description}, ),
     ])
   }
   getAllMembers(data: GetAllMembersDto) {

@@ -68,6 +68,7 @@ export class NewsService {
     }
 
     try {
+      await queryRunner.manager.delete(News, [{ id }])
       await Promise.all([
         queryRunner.manager.delete(Dictionary, [{ id: news.descriptionId }, { id: news.titleId }]),
         news.imageId && queryRunner.manager.delete(ImageEntity, [{ id: news.imageId }]),
