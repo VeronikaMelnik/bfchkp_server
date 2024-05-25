@@ -59,15 +59,16 @@ export class UsersAccessService {
     }
     const person = await this.personService.findById(user.personId);
     if (name) {
-      user.person.name = name;
+      person.name = name;
     }
     if (lastName) {
-      user.person.lastName = lastName;
+      person.lastName = lastName;
     }
     await Promise.all([
       this.personService.save(person),
       this.userService.save(user),
     ])
+    user.person = person
     return { data: user }
   }
 }
