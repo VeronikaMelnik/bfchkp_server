@@ -15,7 +15,7 @@ export class UsersAccessService {
     private personService: PersonsService,
     private imageService: ImageService,
     private jwtService: JwtService
-  ) {}
+  ) { }
 
   async getMe(user: TokenPayload) {
     try {
@@ -49,7 +49,7 @@ export class UsersAccessService {
   }
 
   async update({ email, lastName, name, password, id }: UpdateProps) {
-    const user = await this.userService.getUserData(id);
+    const user = await this.userService.findById(id);
     if (email) {
       user.email = email;
     }
@@ -69,7 +69,16 @@ export class UsersAccessService {
       this.userService.save(user),
     ])
     user.person = person
-    return { data: user }
+    
+    const result = {
+      id: user.id,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      email: user.email,
+      person
+    }
+
+    return { data: result }
   }
 }
 
