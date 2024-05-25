@@ -5,6 +5,7 @@ import { Championship } from 'src/database';
 import { CreateUserDto, LoginUserDto } from 'src/types/dto/user.dto';
 import { Response } from 'express';
 import { GetAllNewsDto } from 'src/types/dto/news.dto';
+import { PaginationDto } from 'src/types/dto/pagination.dto';
 
 @ApiTags('Команды неавторизованного юзера')
 @Controller('api/')
@@ -27,8 +28,15 @@ export class UnauthorizedAccessController {
   @ApiOperation({ summary: 'Получение чемпионата' })
   @ApiResponse({ status: 200, type: [Championship] })
   @Get('/championship/:id')
-  getAll(@Param('id') id: string) {
+  getChampionship(@Param('id') id: string) {
     return this.unauthorizedService.getChampionshipById(Number(id))
+  }
+
+  @ApiOperation({ summary: 'Получение всех чемпионатов' })
+  @ApiResponse({ status: 200, type: [Championship] })
+  @Get('/championships')
+  getChampionships(@Query() data: PaginationDto) {
+    return this.unauthorizedService.getAllChampionships(data)
   }
 
   @ApiOperation({

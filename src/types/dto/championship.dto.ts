@@ -1,18 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsString, IsInt } from "class-validator";
 
 export class CreateChampionshipDto {
   @ApiProperty({ example: 'Рожденственсике звезды', description: 'Название чемпионата' })
   @IsString({ message: 'Должно быть строкой' })
-  name?: string;
+  name: string;
 
-  @ApiProperty({ example: '1', description: 'ID' })
-  @IsNumber({}, { message: 'Должно быть числом' })
-  disciplineId?: number;
-
-  @ApiProperty({ example: '1', description: 'ID' })
-  @IsNumber({}, { message: 'Должно быть числом' })
-  judgeId?: number;
+  @ApiProperty({ example: 1716628853679, description: 'timestamp даты проведения (мс)' })
+  @IsNumber()
+  @IsInt()
+  date: number
 }
 
 export class FindChampionshipByIdDto {

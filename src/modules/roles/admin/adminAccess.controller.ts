@@ -6,7 +6,6 @@ import { CreateCoachDto } from 'src/types/dto/coach.dto';
 import { AdminsAccessService } from './adminAccess.service';
 import { AdminRoleGuard } from 'src/guards/admin.guard';
 import { CreateAdminDto } from 'src/types/dto/admin.dto';
-import { GetAllUsersDto } from 'src/types/dto/user.dto';
 import { CreateNewsDto } from 'src/types/dto/news.dto';
 import { TokenPayload } from 'src/types/token/token.types';
 import { UpdateDictionaryDto } from 'src/types/dto/dictionary.dto';
@@ -17,7 +16,9 @@ import { Discipline, Member, Title } from 'src/database';
 import { MembersService } from 'src/modules/shared/member/member.service';
 import { DisciplinesService } from 'src/modules/shared/discipline/discipline.service';
 import { TitlesService } from 'src/modules/shared/title/title.service';
-import { CreateMemberDto, GetAllMembersDto } from 'src/types/dto/member.dto';
+import { CreateMemberDto } from 'src/types/dto/member.dto';
+import { PaginationDto } from 'src/types/dto/pagination.dto';
+import { CreateChampionshipDto } from 'src/types/dto/championship.dto';
 
 @ApiTags('Команды администратора')
 @ApiBearerAuth()
@@ -38,6 +39,13 @@ export class AdminsAccessController {
   @Post('/')
   createAdmin(@Body() data: CreateAdminDto) {
     return this.adminsService.createAdmin(data);
+  }
+
+  @ApiOperation({ summary: 'Создание чемпионата' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Post('/championships')
+  createChampionship(@Body() data: CreateChampionshipDto) {
+    return this.adminsService.createChampionship(data);
   }
 
   @ApiOperation({ summary: 'Создание тренера' })
@@ -117,14 +125,14 @@ export class AdminsAccessController {
   @ApiOperation({ summary: 'Все юзеры' })
   @ApiResponse({ status: 200, type: Admin })
   @Get('/users')
-  getAll(@Query() data: GetAllUsersDto) {
+  getAll(@Query() data: PaginationDto) {
     return this.adminsService.getAllUsers(data);
   }
 
   @ApiOperation({ summary: 'Получение всех участников федераций' })
   @ApiResponse({ status: 200, type: [Member] })
   @Get('/members')
-  getAllMembers(@Query() data: GetAllMembersDto) {
+  getAllMembers(@Query() data: PaginationDto) {
     return this.memberService.getAllMembers(data);
   }
 

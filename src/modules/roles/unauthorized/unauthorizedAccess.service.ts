@@ -11,6 +11,7 @@ import { ChampionshipsGroupedService } from "src/modules/grouped championship/ch
 import { ImageService } from "src/modules/shared/image/image.service";
 import { Response } from "express";
 import { NewsService } from "src/modules/shared/news/news.service";
+import { PaginationDto } from "src/types/dto/pagination.dto";
 
 @Injectable()
 export class UnauthorizedAccessService {
@@ -18,13 +19,11 @@ export class UnauthorizedAccessService {
   constructor(
     private userService: UsersService,
     private personService: PersonsService,
-
     private imageService: ImageService,
     private championshipService: ChampionshipsGroupedService,
     private judgeService: JudgesService,
     private disciplineService: DisciplinesService,
     private newsService: NewsService,
-
     private jwtService: JwtService
   ) {}
 
@@ -85,6 +84,10 @@ export class UnauthorizedAccessService {
       judges,
       disciplines,
     }
+  }
+
+  async getAllChampionships(data: PaginationDto) {
+    return this.championshipService.findAll(data)
   }
 
   getImage(data: getImage){

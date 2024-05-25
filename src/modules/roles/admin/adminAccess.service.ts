@@ -20,6 +20,8 @@ import { DisciplinesService } from "src/modules/shared/discipline/discipline.ser
 import { TitlesService } from "src/modules/shared/title/title.service";
 import { CreateMemberDto, GetAllMembersDto } from "src/types/dto/member.dto";
 import { PersonsService } from "src/modules/shared/person/person.service";
+import { CreateChampionshipDto } from "src/types/dto/championship.dto";
+import { ChampionshipsGroupedService } from "src/modules/grouped championship/championship.service";
 
 @Injectable()
 export class AdminsAccessService {
@@ -36,6 +38,8 @@ export class AdminsAccessService {
     private disciplineService: DisciplinesService,
     private titleService: TitlesService,
     private personService: PersonsService,
+    private championshipService: ChampionshipsGroupedService,
+
   ) { }
 
   createAdmin(data: CreateAdminDto) {
@@ -133,6 +137,10 @@ export class AdminsAccessService {
 
   getAllTitles() {
     return this.titleService.getAllTitles()
+  }
+
+  async createChampionship(props: CreateChampionshipDto) {
+    return { data: await this.championshipService.create(props) }
   }
 }
 
