@@ -49,6 +49,16 @@ export class ResultsService {
     const data = this.resultsService.findBy({ championshipId });
     return data;
   }
+
+  async getOne(id: number) {
+    return this.resultsService
+      .createQueryBuilder('result')
+      .leftJoinAndSelect('result.championship', 'championship')
+      .leftJoinAndSelect('result.member', 'member')
+      .leftJoinAndSelect('member.person', 'person')
+      .where({ id })
+      .getOneOrFail();
+  }
 }
 
 interface GetAllProps {

@@ -11,7 +11,7 @@ import { PaginationDto } from 'src/types/dto/pagination.dto';
 @Controller('api/')
 export class UnauthorizedAccessController {
 
-  constructor(private unauthorizedService: UnauthorizedAccessService) { }
+  constructor(private unauthorizedService: UnauthorizedAccessService) {}
 
   @ApiOperation({ summary: 'Авторизация юзера' })
   @Post('auth/login')
@@ -76,5 +76,36 @@ export class UnauthorizedAccessController {
     return this.unauthorizedService.getOneNews(id);
   }
 
+  @ApiOperation({
+    summary: 'Get team details',
+  })
+  @ApiResponse({ status: 200 })
+  @Get('/team/:id')
+  getOneTeam(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.unauthorizedService.getOneTeam(id);
+  }
 
+  @ApiOperation({
+    summary: 'Get result details',
+  })
+  @ApiResponse({ status: 200 })
+  @Get('/result/:id')
+  getOneResult(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.unauthorizedService.getOneResult(id);
+  }
+
+  @ApiOperation({
+    summary: 'Get member details',
+  })
+  @ApiResponse({ status: 200 })
+  @Get('/member/:id')
+  getOneMember(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.unauthorizedService.getOneMember(id);
+  }
 }

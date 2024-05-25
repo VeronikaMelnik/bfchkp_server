@@ -45,6 +45,13 @@ export class TeamsService {
     const data = this.teamsService.findBy({ address });
     return data;
   }
+
+  async getOne(id: number) {
+    return this.teamsService
+      .createQueryBuilder('teams')
+      .where({ id })
+      .getOneOrFail();
+  }
 }
 
 interface GetAllProps {

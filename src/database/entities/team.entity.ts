@@ -21,5 +21,5 @@ export class Team extends BaseEntity {
   @Column({
     nullable: true,
   })
-  logo: string;
+  logo?: string;
 }

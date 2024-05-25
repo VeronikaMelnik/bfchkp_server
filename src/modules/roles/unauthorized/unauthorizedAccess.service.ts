@@ -12,6 +12,9 @@ import { ImageService } from "src/modules/shared/image/image.service";
 import { Response } from "express";
 import { NewsService } from "src/modules/shared/news/news.service";
 import { PaginationDto } from "src/types/dto/pagination.dto";
+import { TeamsService } from "src/modules/shared/team/team.service";
+import { ResultsService } from "src/modules/shared/result/result.service";
+import { MembersService } from "src/modules/shared/member/member.service";
 
 @Injectable()
 export class UnauthorizedAccessService {
@@ -24,6 +27,9 @@ export class UnauthorizedAccessService {
     private judgeService: JudgesService,
     private disciplineService: DisciplinesService,
     private newsService: NewsService,
+    private teamsService: TeamsService,
+    private resultsService: ResultsService,
+    private membersService: MembersService,
     private jwtService: JwtService
   ) {}
 
@@ -32,12 +38,12 @@ export class UnauthorizedAccessService {
     return this.generateToken(user)
   }
 
-  async registration({email, lastName, name, password}: CreateUserDto) {
+  async registration({ email, lastName, name, password }: CreateUserDto) {
     const candidate = await this.userService.findByEmail(email)
     if (candidate) {
       throw new HttpException('Пользователь с таким email уже существует', HttpStatus.CONFLICT)
     }
-    const person = await this.personService.create({lastName, name})
+    const person = await this.personService.create({ lastName, name })
     const hashPassword = await bcrypt.hash(password, Number(process.env.HASH_ROUNDS));
     const user = await this.userService.create({ email, password: hashPassword, personId: person.id })
     return this.generateToken(user)
@@ -50,7 +56,7 @@ export class UnauthorizedAccessService {
     }
   }
 
-  private async validateUser({email, password}: ValidateUserProps) {
+  private async validateUser({ email, password }: ValidateUserProps) {
     const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException({ message: 'Неккоректный email или пароль' })
@@ -90,19 +96,43 @@ export class UnauthorizedAccessService {
     return this.championshipService.findAll(data)
   }
 
-  getImage(data: getImage){
+  getImage(data: getImage) {
     return this.imageService.getImage(data)
   }
 
-  getAllNews(data: GetAllProps){
+  getAllNews(data: GetAllProps) {
     return this.newsService.getAll(data)
   }
 
-  getOneNews(id: number){
+  getOneNews(id: number) {
     try {
       return this.newsService.getOne(id)
     } catch (error) {
       throw new NotFoundException(`News id: ${id} doesn't exist`)
+    }
+  }
+
+  getOneTeam(id: number) {
+    try {
+      return this.teamsService.getOne(id)
+    } catch (error) {
+      throw new NotFoundException(`Team id: ${id} doesn't exist`)
+    }
+  }
+
+  getOneResult(id: number) {
+    try {
+      return this.resultsService.getOne(id)
+    } catch (error) {
+      throw new NotFoundException(`Result id: ${id} doesn't exist`)
+    }
+  }
+
+  getOneMember(id: number) {
+    try {
+      return this.membersService.getOne(id)
+    } catch (error) {
+      throw new NotFoundException(`Member id: ${id} doesn't exist`)
     }
   }
 }

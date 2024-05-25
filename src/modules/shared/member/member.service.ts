@@ -45,7 +45,17 @@ export class MembersService {
     return data;
   }
   remove(id: number) {
-    return this.membersService.delete({id})
+    return this.membersService.delete({ id })
+  }
+
+  async getOne(id: number) {
+    return this.membersService
+      .createQueryBuilder('member')
+      .select(['member.id', 'member.personId', 'member.person', 'member.team'])
+      .leftJoinAndSelect('member.person', 'person')
+      .leftJoinAndSelect('member.team', 'team')
+      .where({ id })
+      .getOneOrFail();
   }
 }
 
