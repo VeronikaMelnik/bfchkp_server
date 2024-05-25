@@ -36,17 +36,17 @@ export class LoginUserDto {
 }
 
 export class GetAllUsersDto {
-  @ApiProperty({default: 1})
+  @ApiProperty({ default: 1 })
   @IsOptional()
   @Transform(value => Number(value) || 1)
   page: number;
 
-  @ApiProperty({default: 10})
+  @ApiProperty({ default: 10 })
   @IsOptional()
   @Transform(value => Number(value) || 10)
   perPage: number;
 
-  @ApiProperty({required: false, default: ''})
+  @ApiProperty({ required: false, default: '' })
   @IsString()
   @IsOptional()
   searchValue: string;
@@ -68,10 +68,4 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   lastName: string;
-
-  @ApiProperty({ example: '246810', description: 'Пароль' })
-  @IsString({ message: 'Должно быть строкой' })
-  @Length(4, 16, { message: 'Пароль должен 4-16 символов!' })
-  @IsOptional()
-  password: string;
 }
