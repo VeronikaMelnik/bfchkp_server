@@ -5,6 +5,7 @@ import { UsersService } from "src/modules/shared/user/user.service";
 import { TokenPayload } from "src/types/token/token.types";
 import { ImageService } from "src/modules/shared/image/image.service";
 import { UpdateUserDto } from "src/types/dto/user.dto";
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersAccessService {
@@ -47,17 +48,21 @@ export class UsersAccessService {
     }
   }
 
-  async update({ email, lastName, name, id }: UpdateProps) {
+  async update({ email, lastName, name, password, id }: UpdateProps) {
     const user = await this.userService.getUserData(id);
     if (email) {
       user.email = email;
     }
+    if (password) {
+      const hashPassword = await bcrypt.hash(password, Number(process.env.HASH_ROUNDS));
+      user.password = hashPassword;
+    }
     const person = await this.personService.findById(user.personId);
     if (name) {
-      person.name = name;
+      user.person.name = name;
     }
     if (lastName) {
-      person.lastName = lastName;
+      user.person.lastName = lastName;
     }
     await Promise.all([
       this.personService.save(person),

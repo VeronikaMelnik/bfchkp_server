@@ -54,7 +54,7 @@ export class UsersService {
   getUserData(id: number) {
     return this.usersRepository
       .createQueryBuilder('user')
-      .select(['user.email', 'user.id', 'user.person'])
+      .select(['user.email', 'user.password', 'user.id', 'user.person'])
       .leftJoinAndSelect('user.person', 'person')
       .leftJoinAndSelect('person.image', 'image')
       .where({ id })
