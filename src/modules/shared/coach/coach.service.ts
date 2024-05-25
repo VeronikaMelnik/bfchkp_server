@@ -25,6 +25,7 @@ export class CoachesService {
       .select(['coach.id', 'coach.personId', 'coach.experience', 'coach.person', 'coach.team'])
       .leftJoinAndSelect('coach.person', 'person')
       .leftJoinAndSelect('coach.team', 'team')
+      .leftJoinAndSelect('person.image', 'image')
       .getMany();
     return data;
   }

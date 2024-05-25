@@ -24,6 +24,7 @@ export class JudgesService {
       .createQueryBuilder('judge')
       .select(['judge.id', 'judge.personId', 'judge.person'])
       .leftJoinAndSelect('judge.person', 'person')
+      .leftJoinAndSelect('person.image', 'image')
       .getMany();
     return data;
   }
