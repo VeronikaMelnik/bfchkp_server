@@ -36,7 +36,7 @@ export class AdminsAccessService {
     private disciplineService: DisciplinesService,
     private titleService: TitlesService,
     private personService: PersonsService,
-  ) {}
+  ) { }
 
   createAdmin(data: CreateAdminDto) {
     return this.adminService.create(data)
@@ -101,27 +101,28 @@ export class AdminsAccessService {
       throw new NotFoundException();
     }
     await Promise.all([
-      this.dictionaryService.update({id: news.titleId, dictionary: title}),
-      this.dictionaryService.update({id: news.descriptionId, dictionary: description}, ),
+      this.dictionaryService.update({ id: news.titleId, dictionary: title }),
+      this.dictionaryService.update({ id: news.descriptionId, dictionary: description },),
     ])
+    return { data: news }
   }
 
-  async createMember({personId, teamId}: CreateMemberDto) {
+  async createMember({ personId, teamId }: CreateMemberDto) {
     const team = await this.teamService.findById(teamId)
     const person = await this.personService.findById(personId)
     if (!team || !person) {
       throw new HttpException('not found', HttpStatus.BAD_REQUEST)
     }
-    return this.memberService.create({personId, teamId})
+    return this.memberService.create({ personId, teamId })
   }
-  
+
   async deleteMember(id: number) {
     try {
       this.memberService.remove(id)
     } catch (error) {
       throw new HttpException('not found', HttpStatus.BAD_REQUEST)
     }
-    return {data: 'ok'}
+    return { data: 'ok' }
   }
   getAllMembers(data: GetAllMembersDto) {
     return this.memberService.getAllMembers(data)
