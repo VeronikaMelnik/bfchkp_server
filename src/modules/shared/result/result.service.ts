@@ -27,6 +27,7 @@ export class ResultsService {
       .leftJoinAndSelect('result.championship', 'championship')
       .leftJoinAndSelect('result.member', 'member')
       .leftJoinAndSelect('member.person', 'person')
+      .leftJoinAndSelect('person.image', 'image')
       .where(
         'result.place::text LIKE :searchValue OR LOWER(person.name) LIKE :searchValue OR LOWER(person.lastName) LIKE :searchValue OR LOWER(championship.name) LIKE :searchValue OR TO_CHAR(championship.date, \'YYYY-MM-DD HH24:MI:SS\') LIKE :searchValue',
         { searchValue: `%${searchValue.toLowerCase()}%` },
@@ -56,11 +57,12 @@ export class ResultsService {
       .leftJoinAndSelect('result.championship', 'championship')
       .leftJoinAndSelect('result.member', 'member')
       .leftJoinAndSelect('member.person', 'person')
+      .leftJoinAndSelect('person.image', 'image')
       .where({ id })
       .getOneOrFail();
   }
   deleteEntity(id: number) {
-    return this.resultsService.delete({id})
+    return this.resultsService.delete({ id })
   }
 }
 
