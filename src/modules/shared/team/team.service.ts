@@ -15,7 +15,7 @@ export class TeamsService {
     const res = await this.teamsService.save(team);
     return res;
   }
-  async update(props: Team) {
+  async save(props: Team) {
     const res = await this.teamsService.save(props);
     return res;
   }
@@ -51,6 +51,9 @@ export class TeamsService {
       .createQueryBuilder('teams')
       .where({ id })
       .getOneOrFail();
+  }
+  deleteEntity(id: number) {
+    return this.teamsService.delete({id})
   }
 }
 

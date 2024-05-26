@@ -22,13 +22,13 @@ export class GetAllResultsDto {
 export class CreateResultDto {
   @ApiProperty({ example: '1', description: 'Место' })
   @IsNumber({}, { message: 'Должно быть числом' })
-  place?: number;
+  place: number;
 
   @ApiProperty({ example: '1', description: 'ID' })
   @IsNumber({}, { message: 'Должно быть числом' })
-  memberId?: number;
+  memberId: number;
 
   @ApiProperty({ example: '1', description: 'ID' })
   @IsNumber({}, { message: 'Должно быть числом' })
-  championshipId?: number;
+  championshipId: number;
 }

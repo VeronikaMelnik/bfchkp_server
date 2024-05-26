@@ -15,7 +15,7 @@ export class ResultsService {
     const res = await this.resultsService.save(prize);
     return res;
   }
-  async update(props: Result) {
+  async save(props: Result) {
     const res = await this.resultsService.save(props);
     return res;
   }
@@ -58,6 +58,9 @@ export class ResultsService {
       .leftJoinAndSelect('member.person', 'person')
       .where({ id })
       .getOneOrFail();
+  }
+  deleteEntity(id: number) {
+    return this.resultsService.delete({id})
   }
 }
 

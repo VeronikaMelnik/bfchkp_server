@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { TeamsService } from "../../shared/team/team.service";
 import { CreateAdminDto } from "src/types/dto/admin.dto";
-import { CreateTeamDto } from "src/types/dto/team.dto";
+import { CreateTeamDto, UpdateTeamDto } from "src/types/dto/team.dto";
 import { CreateCoachDto } from "src/types/dto/coach.dto";
 import { AdminsService } from "src/modules/shared/admin/admin.service";
 import { CoachesService } from "src/modules/shared/coach/coach.service";
@@ -22,6 +22,8 @@ import { CreateMemberDto, GetAllMembersDto } from "src/types/dto/member.dto";
 import { PersonsService } from "src/modules/shared/person/person.service";
 import { CreateChampionshipDto } from "src/types/dto/championship.dto";
 import { ChampionshipsGroupedService } from "src/modules/grouped championship/championship.service";
+import { CreateResultDto } from "src/types/dto/result.dto";
+import { ResultsService } from "src/modules/shared/result/result.service";
 
 @Injectable()
 export class AdminsAccessService {
@@ -39,7 +41,7 @@ export class AdminsAccessService {
     private titleService: TitlesService,
     private personService: PersonsService,
     private championshipService: ChampionshipsGroupedService,
-
+    private resultService: ResultsService,
   ) { }
 
   createAdmin(data: CreateAdminDto) {
@@ -51,6 +53,61 @@ export class AdminsAccessService {
   createTeam(data: CreateTeamDto) {
     return this.teamService.create(data)
   }
+  deleteTeam(id: number) {
+    return this.teamService.deleteEntity(id)
+  }
+  async updateTeam({id, address, city, logo, name}: UpdateTeamProps) {
+    const team = await this.teamService.findById(id)
+    if (!team) {
+      throw new NotFoundException('team');
+    }
+    if (address) {
+      team.address = address;
+    }
+    if (city) {
+      team.city = city;
+    }
+    if (logo) {
+      team.logo = logo;
+    }
+    if (name) {
+      team.name = name;
+    }
+    return this.teamService.save(team)
+  }
+
+  async createResult({memberId, place, championshipId}: CreateResultDto) {
+    const member = await this.memberService.findById(memberId);
+    const championship = await this.championshipService.findById(championshipId);
+    if (!member || !championship) {
+      throw new NotFoundException()
+    }
+    return this.resultService.create({championshipId, memberId, place})
+  }
+
+  async updateResult({memberId, place, championshipId, id}: UpdateResultProps) {
+    const result = await this.resultService.findById(id);
+    const member = await this.memberService.findById(memberId);
+    const championship = await this.championshipService.findById(championshipId);
+    if (!result || !member || !championship) {
+      throw new NotFoundException()
+    }
+    if (place) {
+      result.place = place
+    }
+    if (championshipId) {
+      result.championshipId = championshipId
+    }
+    if (memberId) {
+      result.memberId = memberId
+    }
+    return this.resultService.save(result)
+  }
+
+  async deleteResult(id: number) {
+    return this.resultService.deleteEntity(id)
+  }
+
   createJudge(data: CreateJudgeDto) {
     return this.judgeService.create(data)
   }
@@ -172,4 +229,12 @@ interface UpdateNewsProps {
 }
 interface UpdateDictionaryProps extends Locales {
   id: number;
+}
+
+interface UpdateTeamProps extends UpdateTeamDto {
+  id: number
+}
+
+interface UpdateResultProps extends CreateResultDto {
+  id: number
 }

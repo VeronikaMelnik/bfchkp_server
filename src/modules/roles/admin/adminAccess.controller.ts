@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Admin } from 'typeorm';
-import { CreateTeamDto } from 'src/types/dto/team.dto';
+import { CreateTeamDto, UpdateTeamDto } from 'src/types/dto/team.dto';
 import { CreateCoachDto } from 'src/types/dto/coach.dto';
 import { AdminsAccessService } from './adminAccess.service';
 import { AdminRoleGuard } from 'src/guards/admin.guard';
@@ -19,6 +19,7 @@ import { TitlesService } from 'src/modules/shared/title/title.service';
 import { CreateMemberDto } from 'src/types/dto/member.dto';
 import { PaginationDto } from 'src/types/dto/pagination.dto';
 import { CreateChampionshipDto } from 'src/types/dto/championship.dto';
+import { CreateResultDto } from 'src/types/dto/result.dto';
 
 @ApiTags('Команды администратора')
 @ApiBearerAuth()
@@ -60,6 +61,41 @@ export class AdminsAccessController {
   @Post('/team')
   createTeam(@Body() data: CreateTeamDto) {
     return this.adminsService.createTeam(data);
+  }
+
+  @ApiOperation({ summary: 'Редактирование команды' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Patch('/team/:id')
+  updateTeam(@Param('id', ParseIntPipe) id: number,@Body() data: UpdateTeamDto) {
+    return this.adminsService.updateTeam({...data, id});
+  }
+
+  @ApiOperation({ summary: 'Удаление команды' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Delete('/team/:id')
+  deleteTeam(@Param('id', ParseIntPipe) id: number) {
+    return this.adminsService.deleteTeam(id);
+  }
+
+  @ApiOperation({ summary: 'Удаление результата' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Delete('/result/:id')
+  deleteResult(@Param('id', ParseIntPipe) id: number) {
+    return this.adminsService.deleteResult(id);
+  }
+  
+  @ApiOperation({ summary: 'Редактирование результата' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Patch('/result/:id')
+  updateResult(@Param('id', ParseIntPipe) id: number,@Body() data: CreateResultDto) {
+    return this.adminsService.updateResult({...data, id});
+  }
+  
+  @ApiOperation({ summary: 'Создание результата' })
+  @ApiResponse({ status: 200, type: Admin })
+  @Post('/result')
+  createResult(@Body() data: CreateResultDto) {
+    return this.adminsService.createResult(data);
   }
 
   @ApiOperation({ summary: 'Добавление участника в команду' })
