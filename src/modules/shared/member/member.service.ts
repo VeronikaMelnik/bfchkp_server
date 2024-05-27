@@ -26,6 +26,7 @@ export class MembersService {
       .select(['member.id', 'member.personId', 'member.person', 'member.team'])
       .leftJoinAndSelect('member.person', 'person')
       .leftJoinAndSelect('member.team', 'team')
+      .leftJoinAndSelect('person.image', 'image')
       .where(
         'LOWER(person.name) LIKE :searchValue OR LOWER(person.lastName) LIKE :searchValue OR LOWER(team.name) LIKE :searchValue',
         { searchValue: `%${searchValue.toLowerCase()}%` },
