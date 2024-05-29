@@ -24,6 +24,7 @@ export class TitlesService {
       .createQueryBuilder('title')
       .select(['title.id', 'title.name', 'title.resultId', 'title.memberId', 'title.result', 'title.member'])
       .leftJoinAndSelect('title.result', 'result')
+      .leftJoinAndSelect('result.championship', 'championship')
       .leftJoinAndSelect('title.member', 'member')
       .leftJoinAndSelect('member.person', 'person')
       .getMany();
